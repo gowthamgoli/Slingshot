@@ -4,32 +4,55 @@ using UnityEngine;
 
 public class AddForce : MonoBehaviour {
 
-	private GameObject attractedTo;
+	private GameObject[] attractedTo;
 	public float gravitationalConst;
 
-	private Rigidbody rb1, rb2;
+	private Rigidbody rb1;
+	private Rigidbody[] rb_planet;
 
-	private float mass1, mass2;
+	private int numPlanets;
+	private float mass1;
+	private float[] mass_planet;
+
+	//private Vector3 acceleration;
+
 	private float forceOfAttraction, distance;
 
-	private Vector3 direction;
+	private Vector3 direction, directionPerp;
 	// Use this for initialization
 	void Start () {
-		attractedTo = GameObject.Find ("Planet");
+		attractedTo = GameObject.FindGameObjectsWithTag("Planet");
+		numPlanets = attractedTo.Length;
+
+		rb_planet = new Rigidbody[numPlanets];
+		mass_planet = new float[numPlanets];
+
 		rb1 = GetComponent<Rigidbody> ();
-		rb2 = attractedTo.GetComponent<Rigidbody>();
 		mass1 = rb1.mass;
-		mass2 = rb2.mass;
+
+		for (int i = 0; i < numPlanets; i++) {
+			rb_planet [i] = attractedTo [i].GetComponent<Rigidbody> ();
+			mass_planet [i] = rb_planet [i].mass;
+		}
+		//rb2 = attractedTo.GetComponent<Rigidbody>();
+
+		//mass2 = rb2.mass;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		direction = attractedTo.transform.position - transform.position;
-		distance = direction.magnitude;
-		Debug.Log ("distance: " + distance);
-		forceOfAttraction = (gravitationalConst * mass1 * mass2) / (distance * distance);
-		Debug.Log ("force: " + forceOfAttraction);
-		rb1.AddRelativeForce (forceOfAttraction * direction.normalized);
-		
+		//acceleration = Vector3.zero;
+		for (int i = 0; i < numPlanets; i++) {
+
+			transform.right = rb1.velocity;
+			direction = attractedTo[i].transform.position - transform.position;
+			distance = direction.magnitude;
+			forceOfAttraction = (gravitationalConst * mass1 * mass_planet[i]) / (distance * distance);
+			//transform.Rotate(new Vector3(0,0,1) * 2 *  Time.deltaTime);
+			rb1.AddForce (forceOfAttraction * direction.normalized);
+
+
+		}
+
 	}
 }
