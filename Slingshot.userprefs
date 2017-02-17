@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\AddForce.cs">
+    <Files>
+      <File FileName="Assets\_Scripts\PlayerController.cs" Line="34" Column="31" />
+      <File FileName="Assets\_Scripts\RotateSphere.cs" Line="14" Column="31" />
+      <File FileName="Assets\_Scripts\Mover.cs" Line="12" Column="32" />
+      <File FileName="Assets\_Scripts\DestroyByBoundary.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\DestroyByContact.cs" Line="10" Column="26" />
+      <File FileName="Assets\_Scripts\AddForce.cs" Line="31" Column="16" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
