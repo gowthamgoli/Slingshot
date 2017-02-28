@@ -52,6 +52,8 @@
      <Compile Include="Assets\_Scripts\DestroyByContact.cs" />
      <Compile Include="Assets\_Scripts\Mover.cs" />
      <Compile Include="Assets\_Scripts\PlayerController.cs" />
+     <Compile Include="Assets\_Scripts\Player_SyncPos.cs" />
+     <Compile Include="Assets\_Scripts\Player_SyncRot.cs" />
      <Compile Include="Assets\_Scripts\RotateSphere.cs" />
      <None Include="Assets\Shader\Additive_Base.shader" />
  <Reference Include="UnityEngine.UI">
