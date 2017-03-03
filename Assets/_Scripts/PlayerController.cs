@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerController : NetworkBehaviour {
+public class PlayerController : MonoBehaviour {
 
 	public float speed;
 	public float vertSpeed;
@@ -20,10 +20,6 @@ public class PlayerController : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		if (!isLocalPlayer) {
-			return;
-		}
 
 		if (Input.GetKey ("up")) {
 			//print ("up arrow key is held down");
