@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour {
 
 	public float fireRate;
 	private float nextFire;
+
+    private Touch touch;
 	// Use this for initialization
 	void Start () {
 		
@@ -21,7 +23,33 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKey ("up")) {
+        if (Input.touchCount == 1)
+        {
+            touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)    //check for the first touch
+            {
+                //do nothing
+            }
+
+            else if (touch.phase == TouchPhase.Moved)
+            {
+                transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
+            }
+            else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
+            {
+                //do nothing
+            }
+
+            else
+            {
+                if(Time.time > nextFire) {
+                    nextFire = Time.time + fireRate;
+                    Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                }
+            }
+        }
+
+        /*if (Input.GetKey ("up")) {
 			//print ("up arrow key is held down");
 			transform.Rotate(Vector3.forward * speed * Time.deltaTime);
 		}
@@ -45,6 +73,6 @@ public class PlayerController : MonoBehaviour {
 		{
 			nextFire = Time.time + fireRate;
 			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-		}
-	}
+		}*/
+    }
 }
