@@ -2,6 +2,8 @@
 using GooglePlayGames;
 using GooglePlayGames.BasicApi.Multiplayer;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class MultiplayerController : RealTimeMultiplayerListener
 {
@@ -11,7 +13,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
     private uint maximumOpponents = 1;
     private uint gameVariation = 0;
 
-    public Menu mainMenuScript;
+    public MPLobbyListener lobbyListener;
 
     private MultiplayerController()
     {
@@ -83,9 +85,9 @@ public class MultiplayerController : RealTimeMultiplayerListener
     private void ShowMPStatus(string message)
     {
         Debug.Log(message);
-        if (mainMenuScript != null)
+        if (lobbyListener != null)
         {
-            mainMenuScript.SetLobbyStatusMessage(message);
+            lobbyListener.SetLobbyStatusMessage(message);
         }
     }
 
@@ -100,6 +102,9 @@ public class MultiplayerController : RealTimeMultiplayerListener
         if (success)
         {
             ShowMPStatus("We are connected to the room! I would probably start our game now.");
+            lobbyListener.HideLobby();
+            lobbyListener = null;
+            SceneManager.LoadScene(1);
         }
         else
         {
@@ -150,5 +155,15 @@ public class MultiplayerController : RealTimeMultiplayerListener
             }
             return _instance;
         }
+    }
+
+    public List<Participant> GetAllPlayers()
+    {
+        return PlayGamesPlatform.Instance.RealTime.GetConnectedParticipants();
+    }
+
+    public string GetMyParticipantId()
+    {
+        return PlayGamesPlatform.Instance.RealTime.GetSelf().ParticipantId;
     }
 }

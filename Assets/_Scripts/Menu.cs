@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Menu : MonoBehaviour {
+public class Menu : MonoBehaviour, MPLobbyListener {
 
     public GUISkin guiSkin;
     private bool _showLobbyDialog;
@@ -24,7 +24,7 @@ public class Menu : MonoBehaviour {
         Debug.Log("Pressed play");
         _lobbyMessage = "Starting a multi-player game...";
         _showLobbyDialog = true;
-        MultiplayerController.Instance.mainMenuScript = this;
+        MultiplayerController.Instance.lobbyListener = this;
         MultiplayerController.Instance.SignInAndStartMPGame();
 
         /*if (_showLobbyDialog)

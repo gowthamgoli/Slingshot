@@ -15,8 +15,11 @@ public class PlayerController : MonoBehaviour {
 	private float nextFire;
 
     private Touch touch;
-	// Use this for initialization
-	void Start () {
+
+    public Material[] spaceCraftMaterials;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -33,7 +36,10 @@ public class PlayerController : MonoBehaviour {
 
             else if (touch.phase == TouchPhase.Moved)
             {
-                transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
+                if (transform.position.x < 0)
+                    transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
+                else
+                    transform.Rotate(-Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
             }
             else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
             {
@@ -75,4 +81,10 @@ public class PlayerController : MonoBehaviour {
 			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
 		}*/
     }
+
+    public void SetCarChoice(int carNum, bool isMultiplayer)
+    {
+        transform.FindChild("Player").GetComponent<Renderer>().material = spaceCraftMaterials[carNum - 1];
+    }
+
 }
