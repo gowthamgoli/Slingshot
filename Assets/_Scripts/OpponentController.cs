@@ -19,4 +19,11 @@ public class OpponentController : MonoBehaviour {
     {
         transform.FindChild("Player").GetComponent<Renderer>().material = spaceCraftMaterials[carNum - 1];
     }
+
+    public void SetCarInformation(float rotZ)
+    {
+        //transform.position = new Vector3(posX, posY, 0);
+        transform.rotation = Quaternion.Euler(0, 0, 180f-rotZ);
+        // We're going to do nothing with velocity.... for now
+    }
 }

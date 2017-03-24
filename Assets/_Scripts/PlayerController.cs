@@ -36,10 +36,7 @@ public class PlayerController : MonoBehaviour {
 
             else if (touch.phase == TouchPhase.Moved)
             {
-                if (transform.position.x < 0)
-                    transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
-                else
-                    transform.Rotate(-Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
+                transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
             }
             else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
             {

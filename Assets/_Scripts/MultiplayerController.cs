@@ -14,11 +14,19 @@ public class MultiplayerController : RealTimeMultiplayerListener
     private uint gameVariation = 0;
 
     public MPLobbyListener lobbyListener;
+    public MPUpdateListener updateListener;
+
+    private byte _protocolVersion = 1;
+    // Byte + Byte + 2 floats for position + 2 floats for velcocity + 1 float for rotZ
+    private int _updateMessageLength = 6;
+    private List<byte> _updateMessage;
 
     private MultiplayerController()
     {
         PlayGamesPlatform.DebugLogEnabled = true;
-        PlayGamesPlatform.Activate();   
+        PlayGamesPlatform.Activate();
+
+        _updateMessage = new List<byte>(_updateMessageLength);
     }
 
     public void TrySilentSignIn()
@@ -141,6 +149,20 @@ public class MultiplayerController : RealTimeMultiplayerListener
     public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data)
     {
         ShowMPStatus("We have received some gameplay messages from participant ID:" + senderId);
+        // We'll be doing more with this later...
+        byte messageVersion = (byte)data[0];
+        // Let's figure out what type of message this is.
+        char messageType = (char)data[1];
+        if (messageType == 'U' && data.Length == _updateMessageLength)
+        {
+            float rotZ = System.BitConverter.ToSingle(data, 2);
+            Debug.Log("Player " + senderId + " is at rotation " + rotZ);
+            // We'd better tell our GameController about this.
+            if (updateListener != null)
+            {
+                updateListener.UpdateReceived(senderId, rotZ);
+            }
+        }
     }
 
     #endregion
@@ -165,5 +187,16 @@ public class MultiplayerController : RealTimeMultiplayerListener
     public string GetMyParticipantId()
     {
         return PlayGamesPlatform.Instance.RealTime.GetSelf().ParticipantId;
+    }
+
+    public void SendMyUpdate(float rotZ)
+    {
+        _updateMessage.Clear();
+        _updateMessage.Add(_protocolVersion);
+        _updateMessage.Add((byte)'U');
+        _updateMessage.AddRange(System.BitConverter.GetBytes(rotZ));
+        byte[] messageToSend = _updateMessage.ToArray();
+        Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(false, messageToSend);
     }
 }
