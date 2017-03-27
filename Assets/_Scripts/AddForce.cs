@@ -40,14 +40,14 @@ public class AddForce : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		//acceleration = Vector3.zero;
 		for (int i = 0; i < numPlanets; i++) {
 
 			transform.right = rb1.velocity;
 			direction = attractedTo[i].transform.position - transform.position;
 			distance = direction.magnitude;
-			forceOfAttraction = (gravitationalConst * mass1 * mass_planet[i]) / (distance * distance);
+            forceOfAttraction = (gravitationalConst * mass1 * mass_planet[i]) / (distance * distance);
 			//transform.Rotate(new Vector3(0,0,1) * 2 *  Time.deltaTime);
 			rb1.AddForce (forceOfAttraction * direction.normalized);
 

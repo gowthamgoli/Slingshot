@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using System;
 
 public class PlayerController : MonoBehaviour {
 
@@ -18,9 +19,14 @@ public class PlayerController : MonoBehaviour {
 
     public Material[] spaceCraftMaterials;
 
+    public int myTurn;
+
+    //private GameObject gameManager;
+    private GameController gameController;
+
     // Use this for initialization
     void Start () {
-		
+        gameController = GameObject.Find("GameManager").GetComponent<GameController>();
 	}
 	
 	// Update is called once per frame
@@ -36,7 +42,11 @@ public class PlayerController : MonoBehaviour {
 
             else if (touch.phase == TouchPhase.Moved)
             {
-                transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
+                if (gameController.getPlayerTurn() == myTurn)
+                {
+                    transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
+                }
+
             }
             else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
             {
@@ -45,14 +55,31 @@ public class PlayerController : MonoBehaviour {
 
             else
             {
-                if(Time.time > nextFire) {
-                    nextFire = Time.time + fireRate;
-                    Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                if (touch.position.x > (Screen.width / 2))
+                {
+                    if (gameController.getPlayerTurn() == myTurn)
+                    {
+
+                        if (Time.time > nextFire)
+                        {
+                            nextFire = Time.time + fireRate;
+                            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                            try
+                            {
+                                gameController.DoShotUpdate(shotSpawn.position, shotSpawn.rotation);
+                            }
+                            catch (Exception e) {
+                                Debug.Log("Exception " + e.ToString());
+                            }
+                            gameController.setPlayerTurn(1 - myTurn);
+                        }
+                    }
                 }
             }
+                
         }
 
-        /*if (Input.GetKey ("up")) {
+        if (Input.GetKey ("up")) {
 			//print ("up arrow key is held down");
 			transform.Rotate(Vector3.forward * speed * Time.deltaTime);
 		}
@@ -76,12 +103,16 @@ public class PlayerController : MonoBehaviour {
 		{
 			nextFire = Time.time + fireRate;
 			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-		}*/
+		}
     }
 
     public void SetCarChoice(int carNum, bool isMultiplayer)
     {
         transform.FindChild("Player").GetComponent<Renderer>().material = spaceCraftMaterials[carNum - 1];
+    }
+
+    public void SetMyTurn(int i) {
+        myTurn = i;
     }
 
 }

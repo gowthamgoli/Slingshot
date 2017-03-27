@@ -8,14 +8,17 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public GameObject myCarPrefab;
     public GameObject opponentPrefab;
+    public GameObject shotPrefab;
 
-    public GameObject myCar;
-    public GameObject opponentCar;
+    private GameObject myCar;
+    private GameObject opponentCar;
 
     private bool _multiplayerReady;
     private string _myParticipantId;
     private Vector2 _startingPoint = new Vector2(-7.28f, 0f);
     private Dictionary<string, OpponentController> _opponentScripts;
+
+    private int playerTurn = 0;
 
     void Start() {
         SetupMultiplayerGame();
@@ -41,19 +44,28 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             Debug.Log("Setting up car for " + nextParticipantId);
             // 3
             Vector3 carStartPoint = Vector3.zero;
-            //if (i == 0) carStartPoint = new Vector3(_startingPoint.x, _startingPoint.y, 0);
-            //else if (i == 1) carStartPoint = new Vector3(_startingPoint.x * -1, _startingPoint.y, 0);
-
+            
             if (nextParticipantId == _myParticipantId)
             {
+                
                 // 4
                 carStartPoint = new Vector3(_startingPoint.x, _startingPoint.y, 0);
                 myCar = (Instantiate(myCarPrefab, carStartPoint, Quaternion.identity) as GameObject);
                 myCar.GetComponent<PlayerController>().SetCarChoice(i + 1, true);
+                myCar.GetComponent<PlayerController>().SetMyTurn(i);
                 //myCar.transform.position = carStartPoint;
             }
             else
             {
+                if (i == 1) {
+                    GameObject Planets = GameObject.Find("Planets");
+                    foreach (Transform planet in Planets.transform)
+                    {
+                        planet.position = new Vector3(-planet.position.x, planet.position.y, planet.position.z);
+                        planet.rotation = Quaternion.Euler(new Vector3(0, 180f, 0));
+                    }
+                }
+                //Mirror Planets
                 // 5
                 carStartPoint = new Vector3(_startingPoint.x * -1, _startingPoint.y, 0);
                 opponentCar = (Instantiate(opponentPrefab, carStartPoint, Quaternion.Euler(0, 0, -180f)) as GameObject);
@@ -76,6 +88,15 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z);
     }
 
+    void DoTurnUpdate() {
+        MultiplayerController.Instance.SendMyUpdate_Turn(playerTurn);
+    }
+
+    public void DoShotUpdate(Vector3 position, Quaternion rotation)
+    {
+        MultiplayerController.Instance.SendMyUpdate_Shot(position.x, position.y, position.z, rotation.x, rotation.y, rotation.z);
+    }
+
     public void UpdateReceived(string senderId, float rotZ)
     {
             OpponentController opponent = _opponentScripts[senderId];
@@ -84,4 +105,33 @@ public class GameController : MonoBehaviour, MPUpdateListener {
                 opponent.SetCarInformation(rotZ);
             }
     }
+
+    public void UpdateReceived_Turn(string senderId, int turn)
+    {
+        playerTurn = turn;
+    }
+
+    public void UpdateReceived_Shot(string senderId, float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+    {
+        Vector3 position = new Vector3(-posX, posY, posZ);
+        Quaternion rotation = Quaternion.Euler(rotX, rotY, 180f-rotZ);
+        Instantiate(shotPrefab, position, rotation);
+
+        /*Transform spawnShot = opponentCar.transform.FindChild("ShotSpawn");
+        Debug.Log("position: " + spawnShot.position.ToString());
+        Debug.Log("rotation: " + spawnShot.rotation.ToString());
+        Instantiate(shotPrefab, spawnShot.position, spawnShot.rotation);*/
+    }
+
+
+
+    public int getPlayerTurn() {
+        return playerTurn;
+    }
+
+    public void setPlayerTurn(int turn) {
+        playerTurn = turn;
+        DoTurnUpdate();
+    }
+
 }

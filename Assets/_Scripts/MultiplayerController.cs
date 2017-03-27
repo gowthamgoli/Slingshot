@@ -19,7 +19,11 @@ public class MultiplayerController : RealTimeMultiplayerListener
     private byte _protocolVersion = 1;
     // Byte + Byte + 2 floats for position + 2 floats for velcocity + 1 float for rotZ
     private int _updateMessageLength = 6;
+    private int _updateMessageLength_Turn = 6;
+    private int _updateMessageLength_Shot = 26;
     private List<byte> _updateMessage;
+    private List<byte> _updateMessage_Turn;
+    private List<byte> _updateMessage_Shot;
 
     private MultiplayerController()
     {
@@ -27,6 +31,8 @@ public class MultiplayerController : RealTimeMultiplayerListener
         PlayGamesPlatform.Activate();
 
         _updateMessage = new List<byte>(_updateMessageLength);
+        _updateMessage_Turn = new List<byte>(_updateMessageLength_Turn);
+        _updateMessage_Shot = new List<byte>(_updateMessageLength_Shot);
     }
 
     public void TrySilentSignIn()
@@ -92,7 +98,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     private void ShowMPStatus(string message)
     {
-        Debug.Log(message);
+        //Debug.Log(message);
         if (lobbyListener != null)
         {
             lobbyListener.SetLobbyStatusMessage(message);
@@ -156,11 +162,38 @@ public class MultiplayerController : RealTimeMultiplayerListener
         if (messageType == 'U' && data.Length == _updateMessageLength)
         {
             float rotZ = System.BitConverter.ToSingle(data, 2);
-            Debug.Log("Player " + senderId + " is at rotation " + rotZ);
+            //Debug.Log("Player " + senderId + " is at rotation " + rotZ);
             // We'd better tell our GameController about this.
             if (updateListener != null)
             {
                 updateListener.UpdateReceived(senderId, rotZ);
+            }
+        }
+
+        else if (messageType == 'T' && data.Length == _updateMessageLength_Turn)
+        {
+            int turn = System.BitConverter.ToInt32(data, 2);
+            //Debug.Log("Player " + senderId + " sets turn to " + turn);
+            // We'd better tell our GameController about this.
+            if (updateListener != null)
+            {
+                updateListener.UpdateReceived_Turn(senderId, turn);
+            }
+        }
+
+        else if (messageType == 'S' && data.Length == _updateMessageLength_Shot)
+        {
+            float posX = System.BitConverter.ToSingle(data, 2);
+            float posY = System.BitConverter.ToSingle(data, 6);
+            float posZ = System.BitConverter.ToSingle(data, 10);
+            float rotX = System.BitConverter.ToSingle(data, 14);
+            float rotY = System.BitConverter.ToSingle(data, 18);
+            float rotZ = System.BitConverter.ToSingle(data, 22);
+           // Debug.Log("Player " + senderId + " sets turn to " + turn);
+            // We'd better tell our GameController about this.
+            if (updateListener != null)
+            {
+                updateListener.UpdateReceived_Shot(senderId, posX, posY, posZ, rotX, rotY, rotZ);
             }
         }
     }
@@ -196,7 +229,34 @@ public class MultiplayerController : RealTimeMultiplayerListener
         _updateMessage.Add((byte)'U');
         _updateMessage.AddRange(System.BitConverter.GetBytes(rotZ));
         byte[] messageToSend = _updateMessage.ToArray();
-        Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
+        //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(false, messageToSend);
+    }
+
+    public void SendMyUpdate_Turn(int turn)
+    {
+        _updateMessage_Turn.Clear();
+        _updateMessage_Turn.Add(_protocolVersion);
+        _updateMessage_Turn.Add((byte)'T');
+        _updateMessage_Turn.AddRange(System.BitConverter.GetBytes(turn));
+        byte[] messageToSend = _updateMessage_Turn.ToArray();
+        //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);
+    }
+
+    public void SendMyUpdate_Shot(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+    {
+        _updateMessage_Shot.Clear();
+        _updateMessage_Shot.Add(_protocolVersion);
+        _updateMessage_Shot.Add((byte)'S');
+        _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(posX));
+        _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(posY));
+        _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(posZ));
+        _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(rotX));
+        _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(rotY));
+        _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(rotZ));
+        byte[] messageToSend = _updateMessage_Shot.ToArray();
+        //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);
     }
 }
