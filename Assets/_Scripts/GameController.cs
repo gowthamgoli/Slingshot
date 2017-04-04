@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GooglePlayGames.BasicApi.Multiplayer;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour, MPUpdateListener {
 
@@ -19,6 +20,9 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     private Dictionary<string, OpponentController> _opponentScripts;
 
     private int playerTurn = 0;
+
+    public Text spawnText;  // public if you want to drag your text object in there manually
+    public Text rotationText;
 
     void Start() {
         SetupMultiplayerGame();
@@ -92,9 +96,9 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         MultiplayerController.Instance.SendMyUpdate_Turn(playerTurn);
     }
 
-    public void DoShotUpdate(Vector3 position, Quaternion rotation)
+    public void DoShotUpdate(Vector3 position, float rotationZ)
     {
-        MultiplayerController.Instance.SendMyUpdate_Shot(position.x, position.y, position.z, rotation.x, rotation.y, rotation.z);
+        MultiplayerController.Instance.SendMyUpdate_Shot(position.x, position.y, position.z, 0, 0, rotationZ);
     }
 
     public void UpdateReceived(string senderId, float rotZ)
@@ -115,6 +119,8 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     {
         Vector3 position = new Vector3(-posX, posY, posZ);
         Quaternion rotation = Quaternion.Euler(rotX, rotY, 180f-rotZ);
+        spawnText.text = position.ToString();
+        rotationText.text = rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString();
         Instantiate(shotPrefab, position, rotation);
 
         /*Transform spawnShot = opponentCar.transform.FindChild("ShotSpawn");

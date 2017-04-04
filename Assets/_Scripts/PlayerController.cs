@@ -28,10 +28,13 @@ public class PlayerController : MonoBehaviour {
 
 
     public Text rotationText;  // public if you want to drag your text object in there manually
+    public Text spawnText;
     //int rotationZ;
 
     // Use this for initialization
     void Start () {
+        rotationText = GameObject.Find("rotation").GetComponent<Text>();
+        spawnText = GameObject.Find("spawn").GetComponent<Text>();
         gameController = GameObject.Find("GameManager").GetComponent<GameController>();
 	}
 	
@@ -48,11 +51,11 @@ public class PlayerController : MonoBehaviour {
 
             else if (touch.phase == TouchPhase.Moved)
             {
-                //if (gameController.getPlayerTurn() == myTurn)
-                //{
+                if (gameController.getPlayerTurn() == myTurn)
+                {
                     transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
-                    rotationText.text = transform.rotation.ToString();
-                //}
+                    //rotationText.text = transform.rotation.z.ToString();
+                }
 
             }
             else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
@@ -64,23 +67,27 @@ public class PlayerController : MonoBehaviour {
             {
                 if (touch.position.x > (Screen.width / 2))
                 {
-                    //if (gameController.getPlayerTurn() == myTurn)
-                    //{
+                    if (gameController.getPlayerTurn() == myTurn)
+                    {
 
                         if (Time.time > nextFire)
                         {
                             nextFire = Time.time + fireRate;
+                            Debug.Log(shotSpawn.position);
+                            Debug.Log(shotSpawn.rotation.ToString());
+                            spawnText.text = shotSpawn.position.ToString();
+                            rotationText.text = shotSpawn.rotation.eulerAngles.z.ToString() + "," + shotSpawn.rotation.eulerAngles.z.ToString() + "," + shotSpawn.rotation.eulerAngles.z.ToString();
                             Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
                             try
                             {
-                                gameController.DoShotUpdate(shotSpawn.position, shotSpawn.rotation);
+                                gameController.DoShotUpdate(shotSpawn.position, shotSpawn.eulerAngles.z);
                             }
                             catch (Exception e) {
                                 Debug.Log("Exception " + e.ToString());
                             }
                             gameController.setPlayerTurn(1 - myTurn);
                         }
-                    //}
+                    }
                 }
             }
                 
@@ -111,7 +118,10 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetButton("Jump") && Time.time > nextFire)
 		{
 			nextFire = Time.time + fireRate;
-			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+            Debug.Log(shotSpawn.position);
+            Debug.Log(shotSpawn.rotation.ToString());
+            spawnText.text = shotSpawn.position.ToString();
+            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
 		}
     }
 
