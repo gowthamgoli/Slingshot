@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using System;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -24,6 +25,11 @@ public class PlayerController : MonoBehaviour {
     //private GameObject gameManager;
     private GameController gameController;
 
+
+
+    public Text rotationText;  // public if you want to drag your text object in there manually
+    //int rotationZ;
+
     // Use this for initialization
     void Start () {
         gameController = GameObject.Find("GameManager").GetComponent<GameController>();
@@ -42,10 +48,11 @@ public class PlayerController : MonoBehaviour {
 
             else if (touch.phase == TouchPhase.Moved)
             {
-                if (gameController.getPlayerTurn() == myTurn)
-                {
+                //if (gameController.getPlayerTurn() == myTurn)
+                //{
                     transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
-                }
+                    rotationText.text = transform.rotation.ToString();
+                //}
 
             }
             else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
@@ -57,8 +64,8 @@ public class PlayerController : MonoBehaviour {
             {
                 if (touch.position.x > (Screen.width / 2))
                 {
-                    if (gameController.getPlayerTurn() == myTurn)
-                    {
+                    //if (gameController.getPlayerTurn() == myTurn)
+                    //{
 
                         if (Time.time > nextFire)
                         {
@@ -73,7 +80,7 @@ public class PlayerController : MonoBehaviour {
                             }
                             gameController.setPlayerTurn(1 - myTurn);
                         }
-                    }
+                    //}
                 }
             }
                 
@@ -82,12 +89,14 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKey ("up")) {
 			//print ("up arrow key is held down");
 			transform.Rotate(Vector3.forward * speed * Time.deltaTime);
-		}
+            rotationText.text = transform.rotation.ToString();
+        }
 
 		if (Input.GetKey ("down")) {
 			//print ("down arrow key is held down");
 			transform.Rotate(-Vector3.forward * speed * Time.deltaTime);
-		}
+            rotationText.text = transform.rotation.ToString();
+        }
 
 		if (Input.GetKey ("w")) {
 			//print ("up arrow key is held down");

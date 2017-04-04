@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     private bool _multiplayerReady;
     private string _myParticipantId;
-    private Vector2 _startingPoint = new Vector2(-7.28f, 0f);
+    private Vector2 _startingPoint = new Vector2(-7.63f, 0f);
     private Dictionary<string, OpponentController> _opponentScripts;
 
     private int playerTurn = 0;
