@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour, MPUpdateListener {
 
+    private float _nextBroadcastTime = 0;
 
     public GameObject myCarPrefab;
     public GameObject opponentPrefab;
@@ -24,12 +25,16 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     public Text spawnText;  // public if you want to drag your text object in there manually
     public Text rotationText;
 
+    //public PlayerController playerController;
+
     void Start() {
+        //playerController = myCar.GetComponent<PlayerController>();
         SetupMultiplayerGame();
     }
 
     void Update() {
-        DoMultiplayerUpdate();
+        //if (playerTurn == playerController.GetMyTurn())
+            DoMultiplayerUpdate();
     }
 
     void SetupMultiplayerGame()
@@ -89,7 +94,12 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     void DoMultiplayerUpdate()
     {
-        MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z);
+        if (Time.time > _nextBroadcastTime && playerTurn == myCar.GetComponent<PlayerController>().GetMyTurn())
+        {
+            rotationText.text = "sending " + playerTurn.ToString();
+            MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z);
+            _nextBroadcastTime = Time.time + .16f;
+        }
     }
 
     void DoTurnUpdate() {
@@ -120,7 +130,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         Vector3 position = new Vector3(-posX, posY, posZ);
         Quaternion rotation = Quaternion.Euler(rotX, rotY, 180f-rotZ);
         spawnText.text = position.ToString();
-        rotationText.text = rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString();
+        //rotationText.text = rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString();
         Instantiate(shotPrefab, position, rotation);
 
         /*Transform spawnShot = opponentCar.transform.FindChild("ShotSpawn");

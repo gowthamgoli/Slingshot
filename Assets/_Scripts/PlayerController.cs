@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour {
 
     public Material[] spaceCraftMaterials;
 
-    public int myTurn;
+    private int myTurn;
 
     //private GameObject gameManager;
     private GameController gameController;
@@ -132,6 +132,11 @@ public class PlayerController : MonoBehaviour {
 
     public void SetMyTurn(int i) {
         myTurn = i;
+    }
+
+    public int GetMyTurn()
+    {
+        return myTurn;
     }
 
 }
