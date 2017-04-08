@@ -1,16 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\PlayerController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/_Scripts/LoadMultiplayerScene.cs">
     <Files>
-      <File FileName="Assets\_Scripts\PlayerController.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\Mover.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\RotateSphere.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\DestroyByBoundary.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\DestroyByContact.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\AddForce.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\AutoDestroy.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\Player_SyncPos.cs" Line="1" Column="1" />
-      <File FileName="Assets\_Scripts\Player_SyncRot.cs" Line="1" Column="1" />
+      <File FileName="Assets/_Scripts/Menu.cs" Line="2" Column="34" />
+      <File FileName="Assets/_Scripts/LoadMultiplayerScene.cs" Line="5" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
