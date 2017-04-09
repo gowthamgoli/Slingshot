@@ -11,9 +11,12 @@ public class OpponentController : MonoBehaviour {
     private float _lastUpdateTime;
     private float _timePerUpdate = 0.16f;
 
+    private bool opponentDestroyed;
+
     // Use this for initialization
     void Start () {
         _startRot = transform.rotation;
+        opponentDestroyed = false;
     }
 	
 	// Update is called once per frame
@@ -45,5 +48,15 @@ public class OpponentController : MonoBehaviour {
         _destinationRot = Quaternion.Euler(0, 0, 180f-rotZ);
         //3
         _lastUpdateTime = Time.time;
+    }
+
+    public bool GetOpponentDestroyed()
+    {
+        return opponentDestroyed;
+    }
+
+    public void SetOpponentDestroyed(bool val)
+    {
+        opponentDestroyed = val;
     }
 }

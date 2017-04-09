@@ -7,14 +7,14 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	public float speed;
-	public float vertSpeed;
+    public float speed;
+    public float vertSpeed;
 
-	public GameObject shot;
-	public Transform shotSpawn;
+    public GameObject shot;
+    public Transform shotSpawn;
 
-	public float fireRate;
-	private float nextFire;
+    public float fireRate;
+    private float nextFire;
 
     private Touch touch;
 
@@ -31,15 +31,19 @@ public class PlayerController : MonoBehaviour {
     public Text spawnText;
     //int rotationZ;
 
+    private bool playerDestroyed;
+
     // Use this for initialization
-    void Start () {
+    void Start() {
         rotationText = GameObject.Find("rotation").GetComponent<Text>();
         spawnText = GameObject.Find("spawn").GetComponent<Text>();
         gameController = GameObject.Find("GameManager").GetComponent<GameController>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+
+        playerDestroyed = false;
+    }
+
+    // Update is called once per frame
+    void Update() {
 
         if (Input.touchCount == 1)
         {
@@ -90,39 +94,39 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
             }
-                
+
         }
 
-        if (Input.GetKey ("up")) {
-			//print ("up arrow key is held down");
-			transform.Rotate(Vector3.forward * speed * Time.deltaTime);
+        if (Input.GetKey("up")) {
+            //print ("up arrow key is held down");
+            transform.Rotate(Vector3.forward * speed * Time.deltaTime);
             rotationText.text = transform.rotation.ToString();
         }
 
-		if (Input.GetKey ("down")) {
-			//print ("down arrow key is held down");
-			transform.Rotate(-Vector3.forward * speed * Time.deltaTime);
+        if (Input.GetKey("down")) {
+            //print ("down arrow key is held down");
+            transform.Rotate(-Vector3.forward * speed * Time.deltaTime);
             rotationText.text = transform.rotation.ToString();
         }
 
-		if (Input.GetKey ("w")) {
-			//print ("up arrow key is held down");
-			transform.Translate(Vector3.up * vertSpeed * Time.deltaTime, Space.World);
-		}
+        if (Input.GetKey("w")) {
+            //print ("up arrow key is held down");
+            transform.Translate(Vector3.up * vertSpeed * Time.deltaTime, Space.World);
+        }
 
-		if (Input.GetKey ("s")) {
-			//print ("down arrow key is held down");
-			transform.Translate(-Vector3.up * vertSpeed * Time.deltaTime, Space.World);
-		}
+        if (Input.GetKey("s")) {
+            //print ("down arrow key is held down");
+            transform.Translate(-Vector3.up * vertSpeed * Time.deltaTime, Space.World);
+        }
 
-		if (Input.GetButton("Jump") && Time.time > nextFire)
-		{
-			nextFire = Time.time + fireRate;
+        if (Input.GetButton("Jump") && Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
             Debug.Log(shotSpawn.position);
             Debug.Log(shotSpawn.rotation.ToString());
             spawnText.text = shotSpawn.position.ToString();
             Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-		}
+        }
     }
 
     public void SetCarChoice(int carNum, bool isMultiplayer)
@@ -137,6 +141,15 @@ public class PlayerController : MonoBehaviour {
     public int GetMyTurn()
     {
         return myTurn;
+    }
+
+    public bool GetPlayerDestroyed() {
+        return playerDestroyed;
+    }
+
+    public void SetPlayerDestroyed(bool val)
+    {
+        playerDestroyed = val;
     }
 
 }

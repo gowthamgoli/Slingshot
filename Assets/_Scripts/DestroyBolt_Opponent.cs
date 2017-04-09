@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyBolt : MonoBehaviour {
+public class DestroyBolt_Opponent : MonoBehaviour
+{
 
     public GameObject explosion;
     void OnTriggerEnter(Collider other)
@@ -13,7 +14,7 @@ public class DestroyBolt : MonoBehaviour {
             //Destroy(explosion.gameObject, 5.0f);
             Destroy(other.gameObject);
             Destroy(explosionClone, 2.0f);
-            gameObject.GetComponent<PlayerController>().SetPlayerDestroyed(true);
+            gameObject.GetComponent<OpponentController>().SetOpponentDestroyed(true);
         }
     }
 }

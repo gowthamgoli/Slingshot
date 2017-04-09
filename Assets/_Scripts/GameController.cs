@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GooglePlayGames.BasicApi.Multiplayer;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour, MPUpdateListener {
 
@@ -35,6 +36,11 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     void Update() {
         //if (playerTurn == playerController.GetMyTurn())
             DoMultiplayerUpdate();
+        if (myCar.GetComponent<PlayerController>().GetPlayerDestroyed() || opponentCar.GetComponent<OpponentController>().GetOpponentDestroyed()) {
+            //MultiplayerController.Instance.SendFinishMessage();
+
+            Invoke("LeaveMPGame", 3.0f);
+        }
     }
 
     void SetupMultiplayerGame()
@@ -148,6 +154,17 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     public void setPlayerTurn(int turn) {
         playerTurn = turn;
         DoTurnUpdate();
+    }
+
+    public void LeaveMPGame()
+    {
+        MultiplayerController.Instance.LeaveGame();
+    }
+
+    public void LeftRoomConfirmed()
+    {
+        MultiplayerController.Instance.updateListener = null;
+        SceneManager.LoadScene(0);
     }
 
 }

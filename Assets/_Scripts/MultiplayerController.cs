@@ -128,7 +128,11 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     public void OnLeftRoom()
     {
-        ShowMPStatus("We have left the room. We should probably perform some clean-up tasks.");
+        ShowMPStatus("We have left the room.");
+        if (updateListener != null)
+        {
+            updateListener.LeftRoomConfirmed();
+        }
     }
 
     public void OnParticipantLeft(Participant participant)
@@ -151,6 +155,12 @@ public class MultiplayerController : RealTimeMultiplayerListener
             ShowMPStatus("Player " + participantID + " has left.");
         }
     }
+
+    public void LeaveGame()
+    {
+        PlayGamesPlatform.Instance.RealTime.LeaveRoom();
+    }
+
 
     public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data)
     {
@@ -259,4 +269,5 @@ public class MultiplayerController : RealTimeMultiplayerListener
         //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);
     }
+
 }
