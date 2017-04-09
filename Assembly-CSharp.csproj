@@ -255,6 +255,7 @@
      <Compile Include="Assets\_Scripts\Print.cs" />
      <Compile Include="Assets\_Scripts\RotateSphere.cs" />
      <Compile Include="Assets\_Scripts\ScalableCamera.cs" />
+     <Compile Include="Assets\_Scripts\SwitchCamera.cs" />
      <None Include="Assets\Plugins\Android\MainLibProj\AndroidManifest.xml" />
      <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
      <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
