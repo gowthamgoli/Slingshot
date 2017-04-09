@@ -17,6 +17,7 @@ public class OpponentController : MonoBehaviour {
     void Start () {
         _startRot = transform.rotation;
         opponentDestroyed = false;
+        _lastUpdateTime = Time.time;
     }
 	
 	// Update is called once per frame
@@ -59,4 +60,6 @@ public class OpponentController : MonoBehaviour {
     {
         opponentDestroyed = val;
     }
+
+    public float lastUpdateTime { get { return _lastUpdateTime; } }
 }

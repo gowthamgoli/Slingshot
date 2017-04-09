@@ -26,6 +26,10 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     public Text spawnText;  // public if you want to drag your text object in there manually
     public Text rotationText;
 
+    public float timeOutThreshold = 30.0f;
+    private float _timeOutCheckInterval = 1.0f;
+    private float _nextTimeoutCheck = 0.0f;
+
     //public PlayerController playerController;
 
     void Start() {
@@ -106,6 +110,12 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z);
             _nextBroadcastTime = Time.time + .16f;
         }
+
+        if (Time.time > _nextTimeoutCheck)
+        {
+            CheckForTimeOuts();
+            _nextTimeoutCheck = Time.time + _timeOutCheckInterval;
+        }
     }
 
     void DoTurnUpdate() {
@@ -145,7 +155,21 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         Instantiate(shotPrefab, spawnShot.position, spawnShot.rotation);*/
     }
 
-
+    void CheckForTimeOuts()
+    {
+        foreach (string participantId in _opponentScripts.Keys)
+        {
+            
+            if (_opponentScripts[participantId].lastUpdateTime < Time.time - timeOutThreshold)
+            {
+                // Haven't heard from them in a while!
+                Debug.Log("Haven't heard from " + participantId + " in " + timeOutThreshold +
+                              " seconds! They're outta here!");
+                //PlayerLeftRoom(participantId);
+                Invoke("LeaveMPGame", 3.0f);
+            }
+        }
+    }
 
     public int getPlayerTurn() {
         return playerTurn;
