@@ -13,6 +13,9 @@ public class OpponentController : MonoBehaviour {
 
     private bool opponentDestroyed;
 
+    public GameObject shotPrefab;
+    public AudioSource shoot;
+
     // Use this for initialization
     void Start () {
         _startRot = transform.rotation;
@@ -49,6 +52,11 @@ public class OpponentController : MonoBehaviour {
         _destinationRot = Quaternion.Euler(0, 0, 180f-rotZ);
         //3
         _lastUpdateTime = Time.time;
+    }
+
+    public void InstatitateShot(Vector3 position, Quaternion rotation) {
+        Instantiate(shotPrefab, position, rotation);
+        shoot.Play();
     }
 
     public bool GetOpponentDestroyed()

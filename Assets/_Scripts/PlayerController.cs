@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour {
 
     private bool playerDestroyed;
 
+    public AudioSource shoot;
+
     // Use this for initialization
     void Start() {
         rotationText = GameObject.Find("rotation").GetComponent<Text>();
@@ -82,6 +84,7 @@ public class PlayerController : MonoBehaviour {
                             spawnText.text = shotSpawn.position.ToString();
                             rotationText.text = shotSpawn.rotation.eulerAngles.z.ToString() + "," + shotSpawn.rotation.eulerAngles.z.ToString() + "," + shotSpawn.rotation.eulerAngles.z.ToString();
                             Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                            shoot.Play();
                             try
                             {
                                 gameController.DoShotUpdate(shotSpawn.position, shotSpawn.eulerAngles.z);
@@ -126,6 +129,7 @@ public class PlayerController : MonoBehaviour {
             Debug.Log(shotSpawn.rotation.ToString());
             spawnText.text = shotSpawn.position.ToString();
             Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+            shoot.Play();
         }
     }
 

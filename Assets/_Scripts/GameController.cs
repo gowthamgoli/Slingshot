@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public GameObject myCarPrefab;
     public GameObject opponentPrefab;
-    public GameObject shotPrefab;
+    //public GameObject shotPrefab;
 
     private GameObject myCar;
     private GameObject opponentCar;
@@ -147,7 +147,8 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         Quaternion rotation = Quaternion.Euler(rotX, rotY, 180f-rotZ);
         spawnText.text = position.ToString();
         //rotationText.text = rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString();
-        Instantiate(shotPrefab, position, rotation);
+        //Instantiate(shotPrefab, position, rotation);
+        opponentCar.GetComponent<OpponentController>().InstatitateShot(position, rotation);
 
         /*Transform spawnShot = opponentCar.transform.FindChild("ShotSpawn");
         Debug.Log("position: " + spawnShot.position.ToString());
