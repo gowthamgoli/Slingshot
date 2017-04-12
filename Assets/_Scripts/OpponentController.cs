@@ -1,13 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OpponentController : MonoBehaviour {
 
     public Material[] spaceCraftMaterials;
 
+
+    private Vector3 _startPos;
+    private Vector3 _destinationPos;
     private Quaternion _startRot;
     private Quaternion _destinationRot;
+
     private float _lastUpdateTime;
     private float _timePerUpdate = 0.16f;
 
@@ -18,8 +23,17 @@ public class OpponentController : MonoBehaviour {
 
     private float initSpeed;
 
+    public Text spawnText;
+
+    private float _startingPointX = 7.63f;
+
     // Use this for initialization
     void Start () {
+        spawnText = GameObject.Find("spawn").GetComponent<Text>();
+        _startPos = transform.position;
+        _destinationPos = transform.position;
+        Debug.Log("Opponent spawned at " + _startPos.ToString());
+        spawnText.text = _startPos.ToString();
         _startRot = transform.rotation;
         opponentDestroyed = false;
         _lastUpdateTime = Time.time;
@@ -27,12 +41,14 @@ public class OpponentController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Debug.Log("Opponent's possition : " + transform.position.ToString());
         // 1
         float pctDone = (Time.time - _lastUpdateTime) / _timePerUpdate;
 
         if (pctDone <= 1.0)
         {
-           // 2
+            // 2
+            transform.position = Vector3.Lerp(_startPos, _destinationPos, pctDone);
             transform.rotation = Quaternion.Slerp(_startRot, _destinationRot, pctDone);
         }
     }
@@ -42,15 +58,20 @@ public class OpponentController : MonoBehaviour {
         transform.FindChild("Player").GetComponent<Renderer>().material = spaceCraftMaterials[carNum - 1];
     }
 
-    public void SetCarInformation(float rotZ)
+    public void SetCarInformation(float rotZ, float posY)
     {
-        //transform.position = new Vector3(posX, posY, 0);
+        //transform.position = new Vector3(_startingPointX, posY, 0);
         //transform.rotation = Quaternion.Euler(0, 0, 180f-rotZ);
         // We're going to do nothing with velocity.... for now
 
         //1
+        _startPos = transform.position;
+        Debug.Log("Opponent is at " + _startPos.ToString());
+        spawnText.text = _startPos.ToString();
+        
         _startRot = transform.rotation;
         //2
+        _destinationPos = new Vector3(_startingPointX, posY, 0);
         _destinationRot = Quaternion.Euler(0, 0, 180f-rotZ);
         //3
         _lastUpdateTime = Time.time;

@@ -65,13 +65,29 @@ public class PlayerController : MonoBehaviour {
 
 				else if (touch.phase == TouchPhase.Moved)
 				{
-					if (gameController.getPlayerTurn() == myTurn)
+                    //gameController.getPlayerTurn() == myTurn &&
+
+                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && touch.position.y < (Screen.height / 2))
 					{
 					    transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
 					    //rotationText.text = transform.rotation.z.ToString();
 					}
 
-				}
+                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && touch.position.y > (Screen.height / 2))
+                    {
+                        
+                        transform.Translate(Vector3.up * touch.deltaPosition.y  * Time.deltaTime, Space.World);
+                        // initially, the temporary vector should equal the player's position
+                        Vector3 clampedPosition = transform.position;
+                        // Now we can manipulte it to clamp the y element
+                        clampedPosition.y = Mathf.Clamp(transform.position.y, -5f, 5f);
+                        // re-assigning the transform's position will clamp it
+                        transform.position = clampedPosition;
+                        //transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
+                        //rotationText.text = transform.rotation.z.ToString();
+                    }
+
+                }
 				else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
 				{
 					//do nothing

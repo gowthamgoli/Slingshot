@@ -18,7 +18,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     private byte _protocolVersion = 1;
     // Byte + Byte + 2 floats for position + 2 floats for velcocity + 1 float for rotZ
-    private int _updateMessageLength = 6;
+    private int _updateMessageLength = 10;
     private int _updateMessageLength_Turn = 6;
     private int _updateMessageLength_Shot = 30;
     private List<byte> _updateMessage;
@@ -172,11 +172,12 @@ public class MultiplayerController : RealTimeMultiplayerListener
         if (messageType == 'U' && data.Length == _updateMessageLength)
         {
             float rotZ = System.BitConverter.ToSingle(data, 2);
+            float posY = System.BitConverter.ToSingle(data, 6);
             //Debug.Log("Player " + senderId + " is at rotation " + rotZ);
             // We'd better tell our GameController about this.
             if (updateListener != null)
             {
-                updateListener.UpdateReceived(senderId, rotZ);
+                updateListener.UpdateReceived(senderId, rotZ, posY);
             }
         }
 
@@ -233,12 +234,13 @@ public class MultiplayerController : RealTimeMultiplayerListener
         return PlayGamesPlatform.Instance.RealTime.GetSelf().ParticipantId;
     }
 
-    public void SendMyUpdate(float rotZ)
+    public void SendMyUpdate(float rotZ, float posY)
     {
         _updateMessage.Clear();
         _updateMessage.Add(_protocolVersion);
         _updateMessage.Add((byte)'U');
         _updateMessage.AddRange(System.BitConverter.GetBytes(rotZ));
+        _updateMessage.AddRange(System.BitConverter.GetBytes(posY));
         byte[] messageToSend = _updateMessage.ToArray();
         //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(false, messageToSend);

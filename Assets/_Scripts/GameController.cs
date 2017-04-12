@@ -89,6 +89,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
                 //Mirror Planets
                 // 5
                 carStartPoint = new Vector3(_startingPoint.x * -1, _startingPoint.y, 0);
+                Debug.Log("Opponenet instantiated at " + carStartPoint.ToString());
                 opponentCar = (Instantiate(opponentPrefab, carStartPoint, Quaternion.Euler(0, 0, -180f)) as GameObject);
                 OpponentController opponentScript = opponentCar.GetComponent<OpponentController>();
                 opponentScript.SetCarNumber(i + 1);
@@ -109,7 +110,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         if (Time.time > _nextBroadcastTime && playerTurn == myCar.GetComponent<PlayerController>().GetMyTurn())
         {
             //rotationText.text = "sending " + playerTurn.ToString();
-            MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z);
+            MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z, myCar.transform.position.y);
             _nextBroadcastTime = Time.time + .16f;
         }
 
@@ -129,12 +130,12 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         MultiplayerController.Instance.SendMyUpdate_Shot(position.x, position.y, position.z, 0, 0, rotationZ, sliderVal);
     }
 
-    public void UpdateReceived(string senderId, float rotZ)
+    public void UpdateReceived(string senderId, float rotZ, float posY)
     {
             OpponentController opponent = _opponentScripts[senderId];
             if (opponent != null)
             {
-                opponent.SetCarInformation(rotZ);
+                opponent.SetCarInformation(rotZ, posY);
             }
     }
 
