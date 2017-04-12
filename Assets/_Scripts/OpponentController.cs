@@ -16,6 +16,8 @@ public class OpponentController : MonoBehaviour {
     public GameObject shotPrefab;
     public AudioSource shoot;
 
+    private float initSpeed;
+
     // Use this for initialization
     void Start () {
         _startRot = transform.rotation;
@@ -55,7 +57,11 @@ public class OpponentController : MonoBehaviour {
     }
 
     public void InstatitateShot(Vector3 position, Quaternion rotation) {
+        //shotPrefab.GetComponent<Opponent_Mover>().setInitalSpeed(sliderSpeed);
+        //Debug.Log("Slider value received is: " + sliderVal);
+        
         Instantiate(shotPrefab, position, rotation);
+        //shotPrefab.GetComponent<Rigidbody>().velocity = shotPrefab.transform.right * 10f * sliderSpeed * 0.02f;
         shoot.Play();
     }
 
@@ -67,6 +73,10 @@ public class OpponentController : MonoBehaviour {
     public void SetOpponentDestroyed(bool val)
     {
         opponentDestroyed = val;
+    }
+
+    public float getInitSpeed() {
+        return initSpeed;
     }
 
     public float lastUpdateTime { get { return _lastUpdateTime; } }

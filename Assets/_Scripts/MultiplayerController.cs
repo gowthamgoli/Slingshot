@@ -20,7 +20,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
     // Byte + Byte + 2 floats for position + 2 floats for velcocity + 1 float for rotZ
     private int _updateMessageLength = 6;
     private int _updateMessageLength_Turn = 6;
-    private int _updateMessageLength_Shot = 26;
+    private int _updateMessageLength_Shot = 30;
     private List<byte> _updateMessage;
     private List<byte> _updateMessage_Turn;
     private List<byte> _updateMessage_Shot;
@@ -199,11 +199,12 @@ public class MultiplayerController : RealTimeMultiplayerListener
             float rotX = System.BitConverter.ToSingle(data, 14);
             float rotY = System.BitConverter.ToSingle(data, 18);
             float rotZ = System.BitConverter.ToSingle(data, 22);
-           // Debug.Log("Player " + senderId + " sets turn to " + turn);
+            float sliderVal = System.BitConverter.ToSingle(data, 26);
+            // Debug.Log("Player " + senderId + " sets turn to " + turn);
             // We'd better tell our GameController about this.
             if (updateListener != null)
             {
-                updateListener.UpdateReceived_Shot(senderId, posX, posY, posZ, rotX, rotY, rotZ);
+                updateListener.UpdateReceived_Shot(senderId, posX, posY, posZ, rotX, rotY, rotZ, sliderVal);
             }
         }
     }
@@ -254,7 +255,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);
     }
 
-    public void SendMyUpdate_Shot(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+    public void SendMyUpdate_Shot(float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float sliderVal)
     {
         _updateMessage_Shot.Clear();
         _updateMessage_Shot.Add(_protocolVersion);
@@ -265,6 +266,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
         _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(rotX));
         _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(rotY));
         _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(rotZ));
+        _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(sliderVal));
         byte[] messageToSend = _updateMessage_Shot.ToArray();
         //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);

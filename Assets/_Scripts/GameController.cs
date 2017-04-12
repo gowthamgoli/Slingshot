@@ -23,12 +23,14 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     private int playerTurn = 0;
 
-    public Text spawnText;  // public if you want to drag your text object in there manually
+    //public Text spawnText;  // public if you want to drag your text object in there manually
     public Text rotationText;
 
-    public float timeOutThreshold = 30.0f;
+    public float timeOutThreshold = 50.0f;
     private float _timeOutCheckInterval = 1.0f;
     private float _nextTimeoutCheck = 0.0f;
+
+    private float initSpeed;
 
     //public PlayerController playerController;
 
@@ -106,7 +108,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     {
         if (Time.time > _nextBroadcastTime && playerTurn == myCar.GetComponent<PlayerController>().GetMyTurn())
         {
-            rotationText.text = "sending " + playerTurn.ToString();
+            //rotationText.text = "sending " + playerTurn.ToString();
             MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z);
             _nextBroadcastTime = Time.time + .16f;
         }
@@ -122,9 +124,9 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         MultiplayerController.Instance.SendMyUpdate_Turn(playerTurn);
     }
 
-    public void DoShotUpdate(Vector3 position, float rotationZ)
+    public void DoShotUpdate(Vector3 position, float rotationZ, float sliderVal)
     {
-        MultiplayerController.Instance.SendMyUpdate_Shot(position.x, position.y, position.z, 0, 0, rotationZ);
+        MultiplayerController.Instance.SendMyUpdate_Shot(position.x, position.y, position.z, 0, 0, rotationZ, sliderVal);
     }
 
     public void UpdateReceived(string senderId, float rotZ)
@@ -141,13 +143,15 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         playerTurn = turn;
     }
 
-    public void UpdateReceived_Shot(string senderId, float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+    public void UpdateReceived_Shot(string senderId, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float sliderVal)
     {
         Vector3 position = new Vector3(-posX, posY, posZ);
         Quaternion rotation = Quaternion.Euler(rotX, rotY, 180f-rotZ);
-        spawnText.text = position.ToString();
+
+        rotationText.text = sliderVal.ToString();
         //rotationText.text = rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString();
         //Instantiate(shotPrefab, position, rotation);
+        initSpeed = sliderVal;
         opponentCar.GetComponent<OpponentController>().InstatitateShot(position, rotation);
 
         /*Transform spawnShot = opponentCar.transform.FindChild("ShotSpawn");
@@ -180,6 +184,11 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         playerTurn = turn;
         DoTurnUpdate();
     }
+
+    public float getInitSpeed() {
+        return initSpeed;
+    }
+
 
     public void LeaveMPGame()
     {

@@ -9,6 +9,6 @@ public class LoadMultiplayerScene : MonoBehaviour {
 	public void load () 
 	{
 		Debug.Log("Pressed multi");
-		SceneManager.LoadScene(1);	
+		SceneManager.LoadScene(1);
 	}
 }
