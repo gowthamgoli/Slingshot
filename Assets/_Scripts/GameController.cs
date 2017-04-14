@@ -42,11 +42,10 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     void Update() {
         //if (playerTurn == playerController.GetMyTurn())
             DoMultiplayerUpdate();
-        if (myCar.GetComponent<PlayerController>().GetPlayerDestroyed() || opponentCar.GetComponent<OpponentController>().GetOpponentDestroyed()) {
+        /*if (myCar.GetComponent<PlayerController>().GetPlayerDestroyed() || opponentCar.GetComponent<OpponentController>().GetOpponentDestroyed()) {
             //MultiplayerController.Instance.SendFinishMessage();
-
             Invoke("LeaveMPGame", 3.0f);
-        }
+        }*/
     }
 
     void SetupMultiplayerGame()
@@ -200,6 +199,10 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     {
         MultiplayerController.Instance.updateListener = null;
         SceneManager.LoadScene(0);
+    }
+
+    public void GameOver(int player) {
+        Invoke("LeaveMPGame", 3.0f);
     }
 
 }

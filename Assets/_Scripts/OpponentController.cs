@@ -27,9 +27,16 @@ public class OpponentController : MonoBehaviour {
 
     private float _startingPointX = 7.63f;
 
+    private int health = 100;
+    private Text player2Health;
+
+    private GameController gameController;
+
     // Use this for initialization
     void Start () {
         spawnText = GameObject.Find("spawn").GetComponent<Text>();
+        player2Health = GameObject.Find("player2Health").GetComponent<Text>();
+        gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         _startPos = transform.position;
         _destinationPos = transform.position;
         Debug.Log("Opponent spawned at " + _startPos.ToString());
@@ -101,4 +108,16 @@ public class OpponentController : MonoBehaviour {
     }
 
     public float lastUpdateTime { get { return _lastUpdateTime; } }
+
+    public void DecreaseHealth()
+    {
+        health -= 34;
+        player2Health.text = health.ToString();
+        if (health < 0)
+        {
+            opponentDestroyed = true;
+            gameController.GameOver(1);
+            Destroy(gameObject);
+        }
+    }
 }

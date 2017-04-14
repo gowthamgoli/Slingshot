@@ -38,9 +38,13 @@ public class PlayerController : MonoBehaviour {
 
     public AudioSource shoot;
 
+    private int health = 100;
+    private Text player1Health;
+
     // Use this for initialization
     void Start() {
         rotationText = GameObject.Find("rotation").GetComponent<Text>();
+        player1Health = GameObject.Find("player1Health").GetComponent<Text>();
         //spawnText = GameObject.Find("spawn").GetComponent<Text>();
         menuPanel = GameObject.Find("MenuPanel");
         menuPanel.SetActive(false);
@@ -182,6 +186,16 @@ public class PlayerController : MonoBehaviour {
     public void SetPlayerDestroyed(bool val)
     {
         playerDestroyed = val;
+    }
+
+    public void DecreaseHealth() {
+        health -= 34;
+        player1Health.text = health.ToString();
+        if (health < 0) {
+            playerDestroyed = true;
+            gameController.GameOver(0);
+            Destroy(gameObject);
+        }
     }
 
 }

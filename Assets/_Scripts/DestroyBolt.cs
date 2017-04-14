@@ -13,7 +13,7 @@ public class DestroyBolt : MonoBehaviour {
             //Destroy(explosion.gameObject, 5.0f);
             Destroy(other.gameObject);
             Destroy(explosionClone, 2.0f);
-            gameObject.GetComponent<PlayerController>().SetPlayerDestroyed(true);
+            gameObject.GetComponent<PlayerController>().DecreaseHealth();
         }
     }
 }
