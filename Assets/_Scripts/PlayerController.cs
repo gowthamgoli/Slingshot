@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 
     public Slider speedSilder;
 
-    public Text rotationText;  // public if you want to drag your text object in there manually
+    //public Text rotationText;  // public if you want to drag your text object in there manually
     //public Text spawnText;
     //int rotationZ;
 
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        rotationText = GameObject.Find("rotation").GetComponent<Text>();
+        //rotationText = GameObject.Find("rotation").GetComponent<Text>();
         player1Health = GameObject.Find("player1Health").GetComponent<Text>();
         //spawnText = GameObject.Find("spawn").GetComponent<Text>();
         menuPanel = GameObject.Find("MenuPanel");
@@ -77,10 +77,10 @@ public class PlayerController : MonoBehaviour {
 					    //rotationText.text = transform.rotation.z.ToString();
 					}*/
 
-                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && touch.position.y > (Screen.height / 2))
+                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2))
                     {
                         
-                        transform.Translate(Vector3.up * touch.deltaPosition.y  * Time.deltaTime, Space.World);
+                        transform.Translate(Vector3.up * touch.deltaPosition.y * 2.5f * Time.deltaTime, Space.World);
                         // initially, the temporary vector should equal the player's position
                         Vector3 clampedPosition = transform.position;
                         // Now we can manipulte it to clamp the y element
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour {
 							    //rotationText.text = shotSpawn.rotation.eulerAngles.z.ToString() + "," + shotSpawn.rotation.eulerAngles.z.ToString() + "," + shotSpawn.rotation.eulerAngles.z.ToString();
 							    Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
                                 Debug.Log("SLider value sent is : " + speedSilder.value);
-                                rotationText.text = speedSilder.value.ToString();
+                                //rotationText.text = speedSilder.value.ToString();
 							    shoot.Play();
 							    try
 							    {
@@ -189,9 +189,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void DecreaseHealth() {
+        Debug.Log("Opponent's health : " + health);
         health -= 34;
         player1Health.text = health.ToString();
         if (health < 0) {
+            Debug.Log("Opponent has won the game");
             playerDestroyed = true;
             gameController.GameOver(0);
             Destroy(gameObject);

@@ -18,7 +18,6 @@ public class RandomPlanets : MonoBehaviour {
     private float posY;
     private float scale;
     public float offset = 0.5f;
-    //public float offsetY = 0.2f;
 
     public GameObject planetPrefab;
     private List<GameObject> planets;
@@ -26,7 +25,7 @@ public class RandomPlanets : MonoBehaviour {
     private List<int> ranges; 
 
     // Use this for initialization
-    void Awake()
+    void Start()
     {
         planets = new List<GameObject>();
         numPlanets = Random.Range(minPlanets, maxPlanets);
@@ -40,8 +39,12 @@ public class RandomPlanets : MonoBehaviour {
             ranges = new List<int>() {0, 1, 1, 2 };
         }
         //numPlanets = 3;
+        if (numPlanets == 2) offset = 4.0f;
+        else if (numPlanets == 3) offset = 2.5f;
+        else if (numPlanets == 4) offset = 1.0f;
+
         int k = 0;
-        Debug.Log("num planets " + numPlanets);
+        //Debug.Log("num planets " + numPlanets);
         while (planets.Count != numPlanets) {
             posX = Random.Range(minX, maxX);
             posY = Random.Range(minY, maxY);
@@ -50,9 +53,9 @@ public class RandomPlanets : MonoBehaviour {
             else if (ranges[k] == 1) scale = Random.Range(2.0f, 2.75f);
             else if (ranges[k] == 2) scale = Random.Range(2.75f, 3.75f);
 
-            Debug.Log("x: " + posX + " y: " + posY + " scale: " + scale);
+            //Debug.Log("x: " + posX + " y: " + posY + " scale: " + scale);
             if(positionIsValid(posX, posY, planets, scale)){
-                Debug.Log("Valid position");
+                //Debug.Log("Valid position");
                 GameObject planet = Instantiate(planetPrefab, new Vector3(posX, posY, 0), Quaternion.identity);
                 planet.transform.localScale = new Vector3(scale, scale, scale);
                 planets.Add(planet);
@@ -72,13 +75,12 @@ public class RandomPlanets : MonoBehaviour {
         for (int i = 0; i < planets.Count; i++) {
             radius = 0.5f * planets[i].transform.localScale.x;
             myRadius = 0.5f * scale;
-            Debug.Log("radius  " + i + " : " + radius);
+            //Debug.Log("radius  " + i + " : " + radius);
             if(Vector3.Distance(myPos, planets[i].transform.position) < radius + myRadius + offset){
                 return false;
             }         
         }
-        
-        Debug.Log("Not Valid position");
+        //Debug.Log("Not Valid position");
         return true;
     }
 }

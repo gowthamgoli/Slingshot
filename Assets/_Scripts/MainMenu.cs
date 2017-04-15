@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
     {
         if (_showLobbyDialog)
         {
-            Debug.Log("Show lobby msg");
+            //Debug.Log("Show lobby msg");
             GUI.skin = guiSkin;
 			InitStyles();
 			GUI.Box(new Rect ((Screen.width)/2 -(Screen.width)/8,(Screen.height)/2-(Screen.height)/8,(Screen.width)/4,(Screen.height)/4), _lobbyMessage, currentStyle);

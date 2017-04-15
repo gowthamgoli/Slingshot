@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     //public RadialSlider 
 
     //public Text spawnText;  // public if you want to drag your text object in there manually
-    public Text rotationText;
+    //public Text rotationText;
 
     public float timeOutThreshold = 50.0f;
     private float _timeOutCheckInterval = 1.0f;
@@ -35,10 +35,9 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     private float initSpeed;
 
-    //public PlayerController playerController;
-
     void Start() {
         //playerController = myCar.GetComponent<PlayerController>();
+        //randPlanets = new RandomPlanets();
         SetupMultiplayerGame();
     }
 
@@ -70,6 +69,9 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             
             if (nextParticipantId == _myParticipantId)
             {
+                /*if (i == 0) {
+                    randPlanets.
+                }*/
                 
                 // 4
                 carStartPoint = new Vector3(_startingPoint.x, _startingPoint.y, 0);
@@ -152,7 +154,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         Vector3 position = new Vector3(-posX, posY, posZ);
         Quaternion rotation = Quaternion.Euler(rotX, rotY, 180f-rotZ);
 
-        rotationText.text = sliderVal.ToString();
+        //rotationText.text = sliderVal.ToString();
         //rotationText.text = rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString();
         //Instantiate(shotPrefab, position, rotation);
         initSpeed = sliderVal;
@@ -201,11 +203,13 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public void LeftRoomConfirmed()
     {
+        Debug.Log("Left room confirmed, load main menu scnene now");
         MultiplayerController.Instance.updateListener = null;
         SceneManager.LoadScene(0);
     }
 
     public void GameOver(int player) {
+        Debug.Log("Load main menu scene after 3 secs");
         Invoke("LeaveMPGame", 3.0f);
     }
 

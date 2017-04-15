@@ -23,7 +23,7 @@ public class OpponentController : MonoBehaviour {
 
     private float initSpeed;
 
-    public Text spawnText;
+    //public Text spawnText;
 
     private float _startingPointX = 7.63f;
 
@@ -34,13 +34,13 @@ public class OpponentController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        spawnText = GameObject.Find("spawn").GetComponent<Text>();
+        //spawnText = GameObject.Find("spawn").GetComponent<Text>();
         player2Health = GameObject.Find("player2Health").GetComponent<Text>();
         gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         _startPos = transform.position;
         _destinationPos = transform.position;
         Debug.Log("Opponent spawned at " + _startPos.ToString());
-        spawnText.text = _startPos.ToString();
+        //spawnText.text = _startPos.ToString();
         _startRot = transform.rotation;
         opponentDestroyed = false;
         _lastUpdateTime = Time.time;
@@ -48,7 +48,7 @@ public class OpponentController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("Opponent's possition : " + transform.position.ToString());
+        //Debug.Log("Opponent's possition : " + transform.position.ToString());
         // 1
         float pctDone = (Time.time - _lastUpdateTime) / _timePerUpdate;
 
@@ -73,8 +73,8 @@ public class OpponentController : MonoBehaviour {
 
         //1
         _startPos = transform.position;
-        Debug.Log("Opponent is at " + _startPos.ToString());
-        spawnText.text = _startPos.ToString();
+        //Debug.Log("Opponent is at " + _startPos.ToString());
+        //spawnText.text = _startPos.ToString();
         
         _startRot = transform.rotation;
         //2
@@ -111,10 +111,12 @@ public class OpponentController : MonoBehaviour {
 
     public void DecreaseHealth()
     {
+        Debug.Log("Opponent's health : " + health);
         health -= 34;
         player2Health.text = health.ToString();
         if (health < 0)
         {
+            Debug.Log("You have won the game");
             opponentDestroyed = true;
             gameController.GameOver(1);
             Destroy(gameObject);
