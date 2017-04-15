@@ -23,6 +23,9 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     private int playerTurn = 0;
 
+    public GameObject CircleSlider;
+    //public RadialSlider 
+
     //public Text spawnText;  // public if you want to drag your text object in there manually
     public Text rotationText;
 
@@ -73,6 +76,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
                 myCar = (Instantiate(myCarPrefab, carStartPoint, Quaternion.identity) as GameObject);
                 myCar.GetComponent<PlayerController>().SetCarChoice(i + 1, true);
                 myCar.GetComponent<PlayerController>().SetMyTurn(i);
+                CircleSlider.GetComponent<RadialSlider>().enabled = true;
                 //myCar.transform.position = carStartPoint;
             }
             else

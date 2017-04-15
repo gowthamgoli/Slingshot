@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DrawLine : MonoBehaviour {
     private LineRenderer line;
-    private bool isMousePressed;
+    //private bool isMousePressed;
     public List<Vector3> pointsList;
     private Vector3 mousePos;
 
@@ -26,7 +26,7 @@ public class DrawLine : MonoBehaviour {
         line.startColor = Color.green;
         line.endColor = Color.green;
         line.useWorldSpace = true;
-        isMousePressed = false;
+        //isMousePressed = false;
         pointsList = new List<Vector3>();
     }
 	

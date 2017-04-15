@@ -71,11 +71,11 @@ public class PlayerController : MonoBehaviour {
 				{
                     //gameController.getPlayerTurn() == myTurn &&
 
-                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && touch.position.y < (Screen.height / 2))
+                    /*if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && touch.position.y < (Screen.height / 2))
 					{
 					    transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
 					    //rotationText.text = transform.rotation.z.ToString();
-					}
+					}*/
 
                     if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && touch.position.y > (Screen.height / 2))
                     {

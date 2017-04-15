@@ -12,7 +12,7 @@ public class AddForce : MonoBehaviour
     private Rigidbody[] rb_planet;
 
     private int numPlanets;
-    private float mass1;
+    //private float mass1;
     private float[] mass_planet;
 
     private Vector3 acceleration;
@@ -32,7 +32,7 @@ public class AddForce : MonoBehaviour
         mass_planet = new float[numPlanets];
 
         rb1 = GetComponent<Rigidbody>();
-        mass1 = rb1.mass;
+        //mass1 = rb1.mass;
 
         for (int i = 0; i < numPlanets; i++)
         {
