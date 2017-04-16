@@ -30,8 +30,8 @@ public class PlayerController : MonoBehaviour {
 
     public Slider speedSilder;
 
-    public Text rotationText;  // public if you want to drag your text object in there manually
-    public Text spawnText;
+    //public Text rotationText;  // public if you want to drag your text object in there manually
+    //public Text spawnText;
     private Timer timer;
     //int rotationZ;
 
@@ -46,9 +46,9 @@ public class PlayerController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        rotationText = GameObject.Find("rotation").GetComponent<Text>();
+        //rotationText = GameObject.Find("rotation").GetComponent<Text>();
         player1Health = GameObject.Find("player1Health").GetComponent<Text>();
-        spawnText = GameObject.Find("spawn").GetComponent<Text>();
+        //spawnText = GameObject.Find("spawn").GetComponent<Text>();
         menuPanel = GameObject.Find("MenuPanel");
         timer = gameObject.GetComponent<Timer>();
         menuPanel.SetActive(false);
@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour {
 				{
 					if (touch.position.x > (Screen.width / 2) && touch.position.y > (Screen.height / 2))
 					{
-                        spawnText.text = gameController.getPlayerTurn().ToString();
+                        //spawnText.text = gameController.getPlayerTurn().ToString();
                         if (gameController.getPlayerTurn() == myTurn && gameController.getNumBolts() == 0)
 						{      
 						    if (Time.time > nextFire)

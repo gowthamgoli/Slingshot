@@ -28,8 +28,8 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     public GameObject CircleSlider;
     //public RadialSlider 
 
-    public Text spawnText;  // public if you want to drag your text object in there manually
-    public Text rotationText;
+    //public Text spawnText;  // public if you want to drag your text object in there manually
+    //public Text rotationText;
 
     private bool player1Destroyed = false;
     private bool player2Destroyed = false;
@@ -244,7 +244,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         //Rotator.SetActive(true);
         playerTurn = turn;
         //Timer.StartCounting();
-        rotationText.text = playerTurn.ToString();
+        //rotationText.text = playerTurn.ToString();
     }
 
     public void UpdateReceived_Shot(string senderId, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float sliderVal)

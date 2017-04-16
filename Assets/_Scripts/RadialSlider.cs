@@ -92,6 +92,7 @@ public class RadialSlider : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                     //    }
 
                     text.text = ((int)(-angle * 360f)).ToString();
+                    text.color = Color.Lerp(Color.green, Color.red, angle);
 
                     //Debug.Log(localPos+" : "+angle);
 
