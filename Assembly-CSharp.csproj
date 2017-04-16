@@ -238,6 +238,7 @@
      <Compile Include="Assets\Scripts\TiltWindow.cs" />
      <Compile Include="Assets\_Scripts\AddForce.cs" />
      <Compile Include="Assets\_Scripts\AutoDestroy.cs" />
+     <Compile Include="Assets\_Scripts\Configuration.cs" />
      <Compile Include="Assets\_Scripts\DestroyBolt.cs" />
      <Compile Include="Assets\_Scripts\DestroyBolt_Opponent.cs" />
      <Compile Include="Assets\_Scripts\DestroyByBoundary.cs" />

@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public GameObject myCarPrefab;
     public GameObject opponentPrefab;
+    public GameObject planetPrefab;
+    public GameObject planetsParent;
     //public GameObject shotPrefab;
 
     private GameObject myCar;
@@ -42,22 +44,69 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public GameObject Rotator;
     public GameObject PowerSlider;
+
+    private RandomPlanets randomize;
+    private List<GameObject> planets;
     //public Text CountDown;
 
+    Configuration[] t;
+    Configuration obj;
+    //public GameObject planetPrefab;
+
     void Start() {
+
+        obj = new Configuration();
+        t = obj.getList();
         
         //playerController = myCar.GetComponent<PlayerController>();
         //randPlanets = new RandomPlanets();
+        //randomize = new RandomPlanets();
         SetupMultiplayerGame();
     }
 
     void Update() {
         //if (playerTurn == playerController.GetMyTurn())
+            
             DoMultiplayerUpdate();
         /*if (myCar.GetComponent<PlayerController>().GetPlayerDestroyed() || opponentCar.GetComponent<OpponentController>().GetOpponentDestroyed()) {
             //MultiplayerController.Instance.SendFinishMessage();
             Invoke("LeaveMPGame", 3.0f);
         }*/
+    }
+
+    private int InitializePlanets(int p, int x)
+    {
+        int i = Random.Range(0, t.Length);
+        if (p == 1) i = x;
+        Configuration c = t[i];
+        if (c.scale1 != 0.0f)
+        {
+            GameObject planet = Instantiate(planetPrefab, t[i].planet1, Quaternion.identity);
+            planet.transform.localScale = new Vector3(t[i].scale1, t[i].scale1, t[i].scale1);
+            planet.transform.parent = planetsParent.transform;
+        }
+
+        if (c.scale2 != 0.0f)
+        {
+            GameObject planet = Instantiate(planetPrefab, t[i].planet2, Quaternion.identity);
+            planet.transform.localScale = new Vector3(t[i].scale2, t[i].scale2, t[i].scale2);
+            planet.transform.parent = planetsParent.transform;
+        }
+
+        if (c.scale3 != 0.0f)
+        {
+            GameObject planet = Instantiate(planetPrefab, t[i].planet3, Quaternion.identity);
+            planet.transform.localScale = new Vector3(t[i].scale3, t[i].scale3, t[i].scale3);
+            planet.transform.parent = planetsParent.transform;
+        }
+
+        if (c.scale4 != 0.0f)
+        {
+            GameObject planet = Instantiate(planetPrefab, t[i].planet4, Quaternion.identity);
+            planet.transform.localScale = new Vector3(t[i].scale4, t[i].scale4, t[i].scale4);
+            planet.transform.parent = planetsParent.transform;
+        }
+        return i;
     }
 
     void SetupMultiplayerGame()
@@ -79,10 +128,13 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             
             if (nextParticipantId == _myParticipantId)
             {
-                /*if (i == 0) {
-                    randPlanets.
-                }*/
-                
+                if(i == 0)
+                {
+                    int rand = InitializePlanets(0,0);
+                    //planets = randomize.CreatePlanets();
+                    //DoPlanetUpdate(planets);
+                    DoRandomUpdate(rand);
+                }
                 // 4
                 carStartPoint = new Vector3(_startingPoint.x, _startingPoint.y, 0);
                 myCar = (Instantiate(myCarPrefab, carStartPoint, Quaternion.identity) as GameObject);
@@ -98,8 +150,8 @@ public class GameController : MonoBehaviour, MPUpdateListener {
                 if (i == 1) {
                     //PowerSlider.SetActive(false);
                     //Rotator.SetActive(false);
-                    GameObject Planets = GameObject.Find("Planets");
-                    foreach (Transform planet in Planets.transform)
+                    //GameObject Planets = GameObject.Find("Planets");
+                    foreach (Transform planet in planetsParent.transform)
                     {
                         planet.position = new Vector3(-planet.position.x, planet.position.y, planet.position.z);
                         planet.rotation = Quaternion.Euler(new Vector3(0, 180f, 0));
@@ -156,6 +208,26 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         MultiplayerController.Instance.SendMyUpdate_Timer(val);
     }
 
+    public void DoRandomUpdate(int rand)
+    {
+        MultiplayerController.Instance.SendMyUpdate_Rand(rand);
+    }
+
+    public void DoPlanetUpdate(List<GameObject> planets)
+    {
+        Debug.Log("Sending planet coordiantes to opponent");
+        Vector2[] positions = new Vector2[planets.Count];
+        float[] scales = new float[planets.Count];
+        for (int i = 0; i < planets.Count; i++) {
+            positions[i].x = planets[i].transform.position.x;
+            positions[i].y = planets[i].transform.position.y;
+            scales[i] = planets[i].transform.localScale.x;
+        }
+        Debug.Log("Filed positions and scales arrray");
+        MultiplayerController.Instance.SendMyUpdate_Planets(positions, scales);
+
+    }
+
     public void UpdateReceived(string senderId, float rotZ, float posY)
     {
             OpponentController opponent = _opponentScripts[senderId];
@@ -164,6 +236,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
                 opponent.SetCarInformation(rotZ, posY);
             }
     }
+
 
     public void UpdateReceived_Turn(string senderId, int turn)
     {
@@ -192,6 +265,20 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         myCar.GetComponent<Timer>().setTimeLeft(30);
     }
 
+    public void UpdateReceived_Rand(string senderId, int rand)
+    {
+        InitializePlanets(1, rand);        
+    }
+
+    public void UpdateReceived_Planets(string senderId, Vector2[] positions, float[] scales)
+    {
+        for(int i=0; i<positions.Length; i++)
+        {
+            GameObject planet = Instantiate(planetPrefab, new Vector3(positions[i].x, positions[i].y, 0), Quaternion.identity);
+            planet.transform.localScale = new Vector3(scales[i], scales[i], scales[i]);
+            planet.transform.parent = planetsParent.transform;
+        }
+    }
 
     void CheckForTimeOuts()
     {
@@ -208,6 +295,8 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             }
         }
     }
+
+
 
     public int getPlayerTurn() {
         return playerTurn;

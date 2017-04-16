@@ -23,10 +23,14 @@ public class MultiplayerController : RealTimeMultiplayerListener
     private int _updateMessageLength_Turn = 6;
     private int _updateMessageLength_Shot = 30;
     private int _updateMessageLength_Timer = 6;
+    private int _updateMessageLength_Rand = 6;
+    private int _updateMessageLength_Planets = 0;
     private List<byte> _updateMessage;
     private List<byte> _updateMessage_Turn;
     private List<byte> _updateMessage_Shot;
     private List<byte> _updateMessage_Timer;
+    private List<byte> _updateMessage_Rand;
+    private List<byte> _updateMessage_Planets;
 
     private MultiplayerController()
     {
@@ -37,6 +41,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
         _updateMessage_Turn = new List<byte>(_updateMessageLength_Turn);
         _updateMessage_Shot = new List<byte>(_updateMessageLength_Shot);
         _updateMessage_Timer = new List<byte>(_updateMessageLength_Timer);
+        _updateMessage_Rand = new List<byte>(_updateMessageLength_Rand);
     }
 
     public void TrySilentSignIn()
@@ -223,6 +228,43 @@ public class MultiplayerController : RealTimeMultiplayerListener
                 updateListener.UpdateReceived_Timer(senderId, val);
             }
         }
+
+        else if (messageType == 'R' && data.Length == _updateMessageLength_Rand)
+        {
+            int rand = System.BitConverter.ToInt32(data, 2);
+            // Debug.Log("Player " + senderId + " sets turn to " + turn);
+            // We'd better tell our GameController about this.
+            if (updateListener != null)
+            {
+                updateListener.UpdateReceived_Rand(senderId, rand);
+            }
+        }
+
+        else if (messageType == 'P' && data.Length == _updateMessageLength_Planets)
+        {
+            Debug.Log("Received planet parametes");
+            int p = (_updateMessageLength_Planets - 2) / 12;
+            float[] scales = new float[p];
+            Vector2[] positions = new Vector2[p];
+            int k = 2;
+            for(int i=0; i<p; i++)
+            {
+                positions[i].x = System.BitConverter.ToSingle(data, k);
+                k = k + 4;
+                positions[i].y = System.BitConverter.ToSingle(data, k);
+                k = k + 4;
+                scales[i] = System.BitConverter.ToSingle(data, k);
+                k = k + 4;
+            }
+            Debug.Log("Unzipped planet params");
+            //int val = System.BitConverter.ToInt32(data, 2);
+            // Debug.Log("Player " + senderId + " sets turn to " + turn);
+            // We'd better tell our GameController about this.
+            if (updateListener != null)
+            {
+                updateListener.UpdateReceived_Planets(senderId, positions, scales);
+            }
+        }
     }
 
     #endregion
@@ -296,6 +338,38 @@ public class MultiplayerController : RealTimeMultiplayerListener
         _updateMessage_Timer.Add((byte)'C');
         _updateMessage_Timer.AddRange(System.BitConverter.GetBytes(val));
         byte[] messageToSend = _updateMessage_Timer.ToArray();
+        //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);
+    }
+
+    public void SendMyUpdate_Rand(int rand)
+    {
+        _updateMessage_Rand.Clear();
+        _updateMessage_Rand.Add(_protocolVersion);
+        _updateMessage_Rand.Add((byte)'R');
+        _updateMessage_Rand.AddRange(System.BitConverter.GetBytes(rand));
+        byte[] messageToSend = _updateMessage_Rand.ToArray();
+        //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);
+    }
+
+    public void SendMyUpdate_Planets(Vector2[] positions, float[] scales)
+    {
+
+        _updateMessageLength_Planets = 2 + (4 * 2 * positions.Length) + (4 * scales.Length);
+        _updateMessage_Planets = new List<byte>(_updateMessageLength_Planets);
+        _updateMessage_Planets.Clear();
+        _updateMessage_Planets.Add(_protocolVersion);
+        _updateMessage_Planets.Add((byte)'P');
+        //_updateMessage_Timer.AddRange(System.BitConverter.GetBytes(val));
+        for(int i=0; i<positions.Length; i++)
+        {
+            _updateMessage_Planets.AddRange((System.BitConverter.GetBytes(positions[i].x)));
+            _updateMessage_Planets.AddRange((System.BitConverter.GetBytes(positions[i].y)));
+            _updateMessage_Planets.AddRange((System.BitConverter.GetBytes(scales[i])));
+        }
+        Debug.Log("Added to byte array and sending");
+        byte[] messageToSend = _updateMessage_Planets.ToArray();
         //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);
     }

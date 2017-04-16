@@ -22,11 +22,17 @@ public class RandomPlanets : MonoBehaviour {
     public GameObject planetPrefab;
     private List<GameObject> planets;
 
-    private List<int> ranges; 
+    private List<int> ranges;
+
+    private GameObject PlanetsParent;
 
     // Use this for initialization
+    //public List<GameObject> CreatePlanets()
     void Start()
     {
+        PlanetsParent = GameObject.Find("Planets");
+        planetPrefab = (GameObject)Resources.Load("Planet", typeof(GameObject));
+
         planets = new List<GameObject>();
         numPlanets = Random.Range(minPlanets, maxPlanets);
         if (numPlanets == 2){
@@ -58,11 +64,12 @@ public class RandomPlanets : MonoBehaviour {
                 //Debug.Log("Valid position");
                 GameObject planet = Instantiate(planetPrefab, new Vector3(posX, posY, 0), Quaternion.identity);
                 planet.transform.localScale = new Vector3(scale, scale, scale);
+                planet.transform.parent = PlanetsParent.transform;
                 planets.Add(planet);
                 k++;
             }
-
         }
+        //return planets;
     }
 
     public bool positionIsValid(float x, float y, List<GameObject> planets, float scale) {
