@@ -261,6 +261,7 @@
      <Compile Include="Assets\_Scripts\ScalableCamera.cs" />
      <Compile Include="Assets\_Scripts\SwitchCamera.cs" />
      <Compile Include="Assets\_Scripts\Test.cs" />
+     <Compile Include="Assets\_Scripts\Timer.cs" />
      <None Include="Assets\Plugins\Android\MainLibProj\AndroidManifest.xml" />
      <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
      <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />

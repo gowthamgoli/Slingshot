@@ -26,14 +26,6 @@ public class Menu : MonoBehaviour, MPLobbyListener {
         _showLobbyDialog = true;
         MultiplayerController.Instance.lobbyListener = this;
         MultiplayerController.Instance.SignInAndStartMPGame();
-
-        /*if (_showLobbyDialog)
-        {
-            Debug.Log("Show lobby msg");
-            GUI.skin = guiSkin;
-            GUI.Box(new Rect(Screen.width * 0.25f, Screen.height * 0.4f, Screen.width * 0.5f, Screen.height * 0.5f), _lobbyMessage);
-        }*/
-        //SceneManager.LoadScene(1);
     }
 
     public void Multiplayer()

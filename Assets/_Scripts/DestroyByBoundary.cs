@@ -3,8 +3,18 @@ using System.Collections;
 
 public class DestroyByBoundary : MonoBehaviour
 {
-	void OnTriggerExit(Collider other)
+    private GameController gameController;
+    private PlayerController playerController;
+
+    void Start()
+    {
+        gameController = GameObject.Find("GameManager").GetComponent<GameController>();     
+    }
+
+    void OnTriggerExit(Collider other)
 	{
-		Destroy(other.gameObject);
-	}
+        gameController.decNumBolts();
+        Destroy(other.gameObject);
+        gameController.ResetTimer();
+    }
 }

@@ -26,8 +26,11 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     public GameObject CircleSlider;
     //public RadialSlider 
 
-    //public Text spawnText;  // public if you want to drag your text object in there manually
-    //public Text rotationText;
+    public Text spawnText;  // public if you want to drag your text object in there manually
+    public Text rotationText;
+
+    private bool player1Destroyed = false;
+    private bool player2Destroyed = false;
 
     public float timeOutThreshold = 50.0f;
     private float _timeOutCheckInterval = 1.0f;
@@ -35,7 +38,14 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     private float initSpeed;
 
+    private int numBolts = 0;
+
+    public GameObject Rotator;
+    public GameObject PowerSlider;
+    //public Text CountDown;
+
     void Start() {
+        
         //playerController = myCar.GetComponent<PlayerController>();
         //randPlanets = new RandomPlanets();
         SetupMultiplayerGame();
@@ -78,12 +88,16 @@ public class GameController : MonoBehaviour, MPUpdateListener {
                 myCar = (Instantiate(myCarPrefab, carStartPoint, Quaternion.identity) as GameObject);
                 myCar.GetComponent<PlayerController>().SetCarChoice(i + 1, true);
                 myCar.GetComponent<PlayerController>().SetMyTurn(i);
+                myCar.GetComponent<Timer>().enabled = true;
                 CircleSlider.GetComponent<RadialSlider>().enabled = true;
+
                 //myCar.transform.position = carStartPoint;
             }
             else
             {
                 if (i == 1) {
+                    //PowerSlider.SetActive(false);
+                    //Rotator.SetActive(false);
                     GameObject Planets = GameObject.Find("Planets");
                     foreach (Transform planet in Planets.transform)
                     {
@@ -94,7 +108,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
                 //Mirror Planets
                 // 5
                 carStartPoint = new Vector3(_startingPoint.x * -1, _startingPoint.y, 0);
-                Debug.Log("Opponenet instantiated at " + carStartPoint.ToString());
+                //Debug.Log("opponent is instantiated at " + carStartPoint.ToString());
                 opponentCar = (Instantiate(opponentPrefab, carStartPoint, Quaternion.Euler(0, 0, -180f)) as GameObject);
                 OpponentController opponentScript = opponentCar.GetComponent<OpponentController>();
                 opponentScript.SetCarNumber(i + 1);
@@ -112,11 +126,14 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     void DoMultiplayerUpdate()
     {
-        if (Time.time > _nextBroadcastTime && playerTurn == myCar.GetComponent<PlayerController>().GetMyTurn())
+        if (Time.time > _nextBroadcastTime && (!player1Destroyed && !player2Destroyed))
         {
             //rotationText.text = "sending " + playerTurn.ToString();
-            MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z, myCar.transform.position.y);
-            _nextBroadcastTime = Time.time + .16f;
+            if (playerTurn == myCar.GetComponent<PlayerController>().GetMyTurn())
+            {
+                MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z, myCar.transform.position.y);
+                _nextBroadcastTime = Time.time + .16f;
+            }
         }
 
         if (Time.time > _nextTimeoutCheck)
@@ -135,6 +152,10 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         MultiplayerController.Instance.SendMyUpdate_Shot(position.x, position.y, position.z, 0, 0, rotationZ, sliderVal);
     }
 
+    public void DoTimerUpdate(int val) {
+        MultiplayerController.Instance.SendMyUpdate_Timer(val);
+    }
+
     public void UpdateReceived(string senderId, float rotZ, float posY)
     {
             OpponentController opponent = _opponentScripts[senderId];
@@ -146,7 +167,11 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public void UpdateReceived_Turn(string senderId, int turn)
     {
+        //PowerSlider.SetActive(true);
+        //Rotator.SetActive(true);
         playerTurn = turn;
+        //Timer.StartCounting();
+        rotationText.text = playerTurn.ToString();
     }
 
     public void UpdateReceived_Shot(string senderId, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float sliderVal)
@@ -154,17 +179,19 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         Vector3 position = new Vector3(-posX, posY, posZ);
         Quaternion rotation = Quaternion.Euler(rotX, rotY, 180f-rotZ);
 
-        //rotationText.text = sliderVal.ToString();
-        //rotationText.text = rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString() + "," + rotation.eulerAngles.z.ToString();
-        //Instantiate(shotPrefab, position, rotation);
+        myCar.GetComponent<Timer>().setPauseCount(true);
         initSpeed = sliderVal;
+        incNumBolts();
         opponentCar.GetComponent<OpponentController>().InstatitateShot(position, rotation);
-
-        /*Transform spawnShot = opponentCar.transform.FindChild("ShotSpawn");
-        Debug.Log("position: " + spawnShot.position.ToString());
-        Debug.Log("rotation: " + spawnShot.rotation.ToString());
-        Instantiate(shotPrefab, spawnShot.position, spawnShot.rotation);*/
     }
+
+    public void UpdateReceived_Timer(string senderId, int val)
+    {
+        Debug.Log("Timer update recevied : change player and reset timer");
+        playerTurn = val;
+        myCar.GetComponent<Timer>().setTimeLeft(30);
+    }
+
 
     void CheckForTimeOuts()
     {
@@ -188,13 +215,14 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public void setPlayerTurn(int turn) {
         playerTurn = turn;
+        myCar.GetComponent<Timer>().setTimeLeft(30);
+        //myCar.GetComponent<PlayerController>().setNumBoltsShot(0);
         DoTurnUpdate();
     }
 
     public float getInitSpeed() {
         return initSpeed;
     }
-
 
     public void LeaveMPGame()
     {
@@ -212,5 +240,42 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         Debug.Log("Load main menu scene after 3 secs");
         Invoke("LeaveMPGame", 3.0f);
     }
+
+    public void setPlayer1Destroyed(bool val) {
+        player1Destroyed = val;
+        GameOver(1);
+    }
+
+    public void setPlayer2Destroyed(bool val)
+    {
+        player2Destroyed = val;
+        GameOver(2);
+    }
+
+    public int getNumBolts() {
+        return numBolts;
+    }
+
+    public void decNumBolts() {
+        numBolts = 0;
+        /*if (playerTurn == myCar.GetComponent<PlayerController>().GetMyTurn())
+        {
+            //PowerSlider.SetActive(false);
+            //Rotator.SetActive(false);
+            setPlayerTurn(1 - myCar.GetComponent<PlayerController>().GetMyTurn());
+        }*/
+        //spawnText.text = numBolts.ToString();
+    }
+
+    public void incNumBolts()
+    {
+        numBolts = 1;
+        //spawnText.text = numBolts.ToString();
+    }
+
+    public void ResetTimer() {
+        myCar.GetComponent<Timer>().ResetCount();
+    }
+
 
 }

@@ -4,6 +4,7 @@ using GooglePlayGames.BasicApi.Multiplayer;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using UnityEngine.SocialPlatforms;
 
 public class MultiplayerController : RealTimeMultiplayerListener
 {
@@ -21,9 +22,11 @@ public class MultiplayerController : RealTimeMultiplayerListener
     private int _updateMessageLength = 10;
     private int _updateMessageLength_Turn = 6;
     private int _updateMessageLength_Shot = 30;
+    private int _updateMessageLength_Timer = 6;
     private List<byte> _updateMessage;
     private List<byte> _updateMessage_Turn;
     private List<byte> _updateMessage_Shot;
+    private List<byte> _updateMessage_Timer;
 
     private MultiplayerController()
     {
@@ -33,6 +36,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
         _updateMessage = new List<byte>(_updateMessageLength);
         _updateMessage_Turn = new List<byte>(_updateMessageLength_Turn);
         _updateMessage_Shot = new List<byte>(_updateMessageLength_Shot);
+        _updateMessage_Timer = new List<byte>(_updateMessageLength_Timer);
     }
 
     public void TrySilentSignIn()
@@ -208,6 +212,17 @@ public class MultiplayerController : RealTimeMultiplayerListener
                 updateListener.UpdateReceived_Shot(senderId, posX, posY, posZ, rotX, rotY, rotZ, sliderVal);
             }
         }
+
+        else if (messageType == 'C' && data.Length == _updateMessageLength_Timer)
+        {
+            int val = System.BitConverter.ToInt32(data, 2);
+            // Debug.Log("Player " + senderId + " sets turn to " + turn);
+            // We'd better tell our GameController about this.
+            if (updateListener != null)
+            {
+                updateListener.UpdateReceived_Timer(senderId, val);
+            }
+        }
     }
 
     #endregion
@@ -270,6 +285,17 @@ public class MultiplayerController : RealTimeMultiplayerListener
         _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(rotZ));
         _updateMessage_Shot.AddRange(System.BitConverter.GetBytes(sliderVal));
         byte[] messageToSend = _updateMessage_Shot.ToArray();
+        //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);
+    }
+
+    public void SendMyUpdate_Timer(int val)
+    {
+        _updateMessage_Timer.Clear();
+        _updateMessage_Timer.Add(_protocolVersion);
+        _updateMessage_Timer.Add((byte)'C');
+        _updateMessage_Timer.AddRange(System.BitConverter.GetBytes(val));
+        byte[] messageToSend = _updateMessage_Timer.ToArray();
         //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);
     }

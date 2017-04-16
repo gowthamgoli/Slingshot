@@ -4,13 +4,24 @@ using System.Collections;
 public class DestroyByContact : MonoBehaviour
 {
 	public GameObject explosion;
-	void OnTriggerEnter(Collider other)
-	{
-		if(other.tag != "Boundary"){
+
+    private GameController gameController;
+    private PlayerController playerController;
+
+    void Start()
+    {
+        gameController = GameObject.Find("GameManager").GetComponent<GameController>();
+        //playerController = GameObject.Find("Player 1(Clone)").GetComponent<PlayerController>();
+    }
+
+    void OnTriggerEnter(Collider other)
+	{       
+        if (other.tag != "Boundary"){
 			GameObject explosionClone = Instantiate (explosion, other.transform.position, other.transform.rotation);
-			//Destroy(explosion.gameObject, 5.0f);
-			Destroy(other.gameObject);
-			Destroy (explosionClone, 2.0f);
+            gameController.decNumBolts();
+            Destroy(other.gameObject);
+            gameController.ResetTimer();
+            Destroy (explosionClone, 2.0f);
 		}
 	}
 }

@@ -16,7 +16,7 @@ public class OpponentController : MonoBehaviour {
     private float _lastUpdateTime;
     private float _timePerUpdate = 0.16f;
 
-    private bool opponentDestroyed;
+    //private bool opponentDestroyed;
 
     public GameObject shotPrefab;
     public AudioSource shoot;
@@ -39,10 +39,10 @@ public class OpponentController : MonoBehaviour {
         gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         _startPos = transform.position;
         _destinationPos = transform.position;
-        Debug.Log("Opponent spawned at " + _startPos.ToString());
+        //Debug.Log("Opponent spawned at " + _startPos.ToString());
         //spawnText.text = _startPos.ToString();
         _startRot = transform.rotation;
-        opponentDestroyed = false;
+        //opponentDestroyed = false;
         _lastUpdateTime = Time.time;
     }
 	
@@ -93,16 +93,6 @@ public class OpponentController : MonoBehaviour {
         shoot.Play();
     }
 
-    public bool GetOpponentDestroyed()
-    {
-        return opponentDestroyed;
-    }
-
-    public void SetOpponentDestroyed(bool val)
-    {
-        opponentDestroyed = val;
-    }
-
     public float getInitSpeed() {
         return initSpeed;
     }
@@ -111,13 +101,15 @@ public class OpponentController : MonoBehaviour {
 
     public void DecreaseHealth()
     {
-        Debug.Log("Opponent's health : " + health);
+        
         health -= 34;
+        Debug.Log("Opponent's health : " + health);
         player2Health.text = health.ToString();
         if (health < 0)
         {
             Debug.Log("You have won the game");
-            opponentDestroyed = true;
+            //opponentDestroyed = true;
+            gameController.setPlayer2Destroyed(true);
             gameController.GameOver(1);
             Destroy(gameObject);
         }

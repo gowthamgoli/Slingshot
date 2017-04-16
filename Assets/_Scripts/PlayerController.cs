@@ -30,27 +30,31 @@ public class PlayerController : MonoBehaviour {
 
     public Slider speedSilder;
 
-    //public Text rotationText;  // public if you want to drag your text object in there manually
-    //public Text spawnText;
+    public Text rotationText;  // public if you want to drag your text object in there manually
+    public Text spawnText;
+    private Timer timer;
     //int rotationZ;
 
-    private bool playerDestroyed;
+    //private bool playerDestroyed;
 
     public AudioSource shoot;
 
     private int health = 100;
     private Text player1Health;
 
+    //private int numBoltsShot = 0;
+
     // Use this for initialization
     void Start() {
-        //rotationText = GameObject.Find("rotation").GetComponent<Text>();
+        rotationText = GameObject.Find("rotation").GetComponent<Text>();
         player1Health = GameObject.Find("player1Health").GetComponent<Text>();
-        //spawnText = GameObject.Find("spawn").GetComponent<Text>();
+        spawnText = GameObject.Find("spawn").GetComponent<Text>();
         menuPanel = GameObject.Find("MenuPanel");
+        timer = gameObject.GetComponent<Timer>();
         menuPanel.SetActive(false);
         gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         speedSilder = GameObject.Find("Slider").GetComponent<Slider>();
-        playerDestroyed = false;
+        //playerDestroyed = false;
     }
 
     // Update is called once per frame
@@ -69,17 +73,9 @@ public class PlayerController : MonoBehaviour {
 
 				else if (touch.phase == TouchPhase.Moved)
 				{
-                    //gameController.getPlayerTurn() == myTurn &&
 
-                    /*if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && touch.position.y < (Screen.height / 2))
-					{
-					    transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
-					    //rotationText.text = transform.rotation.z.ToString();
-					}*/
-
-                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2))
-                    {
-                        
+                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && gameController.getNumBolts() == 0)
+                    {  
                         transform.Translate(Vector3.up * touch.deltaPosition.y * 2.5f * Time.deltaTime, Space.World);
                         // initially, the temporary vector should equal the player's position
                         Vector3 clampedPosition = transform.position;
@@ -87,8 +83,6 @@ public class PlayerController : MonoBehaviour {
                         clampedPosition.y = Mathf.Clamp(transform.position.y, -5f, 5f);
                         // re-assigning the transform's position will clamp it
                         transform.position = clampedPosition;
-                        //transform.Rotate(Vector3.forward * touch.deltaPosition.y * speed * Time.deltaTime);
-                        //rotationText.text = transform.rotation.z.ToString();
                     }
 
                 }
@@ -101,18 +95,16 @@ public class PlayerController : MonoBehaviour {
 				{
 					if (touch.position.x > (Screen.width / 2) && touch.position.y > (Screen.height / 2))
 					{
-						if (gameController.getPlayerTurn() == myTurn)
-						{
+                        spawnText.text = gameController.getPlayerTurn().ToString();
+                        if (gameController.getPlayerTurn() == myTurn && gameController.getNumBolts() == 0)
+						{      
 						    if (Time.time > nextFire)
 						    {
 							    nextFire = Time.time + fireRate;
-							    Debug.Log(shotSpawn.position);
-							    Debug.Log(shotSpawn.rotation.ToString());
-							    //spawnText.text = shotSpawn.position.ToString();
-							    //rotationText.text = shotSpawn.rotation.eulerAngles.z.ToString() + "," + shotSpawn.rotation.eulerAngles.z.ToString() + "," + shotSpawn.rotation.eulerAngles.z.ToString();
-							    Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-                                Debug.Log("SLider value sent is : " + speedSilder.value);
-                                //rotationText.text = speedSilder.value.ToString();
+                                gameController.incNumBolts();
+                                Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                                timer.setPauseCount(true);
+                                //gameObject.GetComponent<Timer>().enabled = false;
 							    shoot.Play();
 							    try
 							    {
@@ -160,8 +152,18 @@ public class PlayerController : MonoBehaviour {
 				Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
 				shoot.Play();
 			}
-			
-		}
+            /*Debug.Log("Player Turn: " + gameController.getPlayerTurn());
+            Debug.Log("Num of bolts: " + gameController.getNumBolts());
+            Debug.Log("Time Left: " + timer.getTimeLeft());*/
+            
+            /*else if (gameController.getPlayerTurn() != myTurn && gameController.getNumBolts() == 0 && GetComponent<Timer>().getTimeLeft() == 0)
+            {
+                //gameController.setPlayerTurn(1 - myTurn);
+                GetComponent<Timer>().setTimeLeft(30);
+
+            }*/
+
+        }
         
     }
 
@@ -179,23 +181,16 @@ public class PlayerController : MonoBehaviour {
         return myTurn;
     }
 
-    public bool GetPlayerDestroyed() {
-        return playerDestroyed;
-    }
-
-    public void SetPlayerDestroyed(bool val)
-    {
-        playerDestroyed = val;
-    }
-
     public void DecreaseHealth() {
-        Debug.Log("Opponent's health : " + health);
+        
         health -= 34;
+        Debug.Log("Your health : " + health);
         player1Health.text = health.ToString();
         if (health < 0) {
             Debug.Log("Opponent has won the game");
-            playerDestroyed = true;
-            gameController.GameOver(0);
+            //playerDestroyed = true;
+            gameController.setPlayer1Destroyed(true);
+            //gameController.GameOver(0);
             Destroy(gameObject);
         }
     }
