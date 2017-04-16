@@ -51,12 +51,15 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     Configuration[] t;
     Configuration obj;
+
+    private float _lastUpdateTime_Turn;
     //public GameObject planetPrefab;
 
     void Start() {
 
         obj = new Configuration();
         t = obj.getList();
+
         
         //playerController = myCar.GetComponent<PlayerController>();
         //randPlanets = new RandomPlanets();
@@ -242,6 +245,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     {
         //PowerSlider.SetActive(true);
         //Rotator.SetActive(true);
+
         playerTurn = turn;
         //Timer.StartCounting();
         //rotationText.text = playerTurn.ToString();

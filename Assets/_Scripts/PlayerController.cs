@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour {
     private int health = 100;
     private Text player1Health;
 
+
+
     //private int numBoltsShot = 0;
 
     // Use this for initialization
