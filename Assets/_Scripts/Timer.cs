@@ -12,6 +12,9 @@ public class Timer : MonoBehaviour {
 
     private bool pauseCount = false;
 
+    public GameObject Rotator;
+    public GameObject PowerSlider;
+
     //private int skip1 = 0;
     //private int skip2 = 0;
 
@@ -25,6 +28,9 @@ public class Timer : MonoBehaviour {
     void Start() {
         gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         playerController = gameObject.GetComponent<PlayerController>();
+        //speedSilder = GameObject.Find("Slider").GetComponent<Slider>();
+        Rotator = GameObject.Find("Rotator");
+        PowerSlider = GameObject.Find("Slider");
         countDown = GameObject.Find("CountDown").GetComponent<Text>();
         StartCounting();
     }
@@ -38,13 +44,15 @@ public class Timer : MonoBehaviour {
 	void Count () {
         if (!pauseCount)
         {
-            Debug.Log(timeLeft);
+            //Debug.Log(timeLeft);
             countDown.text = timeLeft.ToString();
             if (timeLeft == 0)
             {
                 if (gameController.getPlayerTurn() == playerController.GetMyTurn() && gameController.getNumBolts() == 0)
                 {
                     //gameController.setPlayerTurn(1 - myTurn);
+                    //Rotator.SetActive(false);
+                    //PowerSlider.SetActive(false);
                     Debug.Log("Timer run out: send update to change turn");
                     gameController.DoTimerUpdate(1 - playerController.GetMyTurn());
                     gameController.setPlayerTurn(1 - playerController.GetMyTurn());

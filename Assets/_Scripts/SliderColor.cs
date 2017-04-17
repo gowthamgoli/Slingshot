@@ -17,6 +17,7 @@ public class SliderColor : MonoBehaviour {
     float y = 1.25f;
     float z;
 
+
     public void Start()
     {
         //Adds a listener to the main slider and invokes a method when the value changes.

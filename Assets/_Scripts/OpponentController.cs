@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class OpponentController : MonoBehaviour {
 
     public Material[] spaceCraftMaterials;
+    public Color32[] colors;
 
 
     private Vector3 _startPos;
@@ -63,6 +64,7 @@ public class OpponentController : MonoBehaviour {
     public void SetCarNumber(int carNum)
     {
         transform.FindChild("Player").GetComponent<Renderer>().material = spaceCraftMaterials[carNum - 1];
+        //player2Health.color = colors[carNum - 1];
     }
 
     public void SetCarInformation(float rotZ, float posY)

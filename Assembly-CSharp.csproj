@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{3D405B7E-F8E2-E3EC-94BB-F731853780FB}</ProjectGuid>
+    <ProjectGuid>{81E385A3-644B-F67E-FB55-C7545F8561DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -237,6 +237,7 @@
      <Compile Include="Assets\Scripts\ShowSliderValue.cs" />
      <Compile Include="Assets\Scripts\TiltWindow.cs" />
      <Compile Include="Assets\_Scripts\AddForce.cs" />
+     <Compile Include="Assets\_Scripts\AdjustVolume.cs" />
      <Compile Include="Assets\_Scripts\AutoDestroy.cs" />
      <Compile Include="Assets\_Scripts\Configuration.cs" />
      <Compile Include="Assets\_Scripts\DestroyBolt.cs" />
@@ -249,6 +250,7 @@
      <Compile Include="Assets\_Scripts\MPInterfaces.cs" />
      <Compile Include="Assets\_Scripts\MainMenu.cs" />
      <Compile Include="Assets\_Scripts\Menu.cs" />
+     <Compile Include="Assets\_Scripts\MenuToggle.cs" />
      <Compile Include="Assets\_Scripts\Mover.cs" />
      <Compile Include="Assets\_Scripts\Mover_Opponent.cs" />
      <Compile Include="Assets\_Scripts\MultiplayerController.cs" />

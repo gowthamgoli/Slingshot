@@ -2,6 +2,7 @@
 using GooglePlayGames;
 using GooglePlayGames.BasicApi.Multiplayer;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.SocialPlatforms;
@@ -31,6 +32,8 @@ public class MultiplayerController : RealTimeMultiplayerListener
     private List<byte> _updateMessage_Timer;
     private List<byte> _updateMessage_Rand;
     private List<byte> _updateMessage_Planets;
+
+	public Text t;
 
     private MultiplayerController()
     {
@@ -108,6 +111,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
     private void ShowMPStatus(string message)
     {
         //Debug.Log(message);
+
         if (lobbyListener != null)
         {
             lobbyListener.SetLobbyStatusMessage(message);

@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     private bool player1Destroyed = false;
     private bool player2Destroyed = false;
 
-    public float timeOutThreshold = 50.0f;
+    public float timeOutThreshold = 80.0f;
     private float _timeOutCheckInterval = 1.0f;
     private float _nextTimeoutCheck = 0.0f;
 
@@ -51,17 +51,43 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     Configuration[] t;
     Configuration obj;
+
+    public Material[] planet_mats;
     //public GameObject planetPrefab;
+
+    public Text player1Health;
+    public Text player2Health;
+
+    public Color32[] colors;
+
+    private float _lastUpdateTime_Timer;
 
     void Start() {
 
         obj = new Configuration();
         t = obj.getList();
+
+        _lastUpdateTime_Timer = Time.time;
         
         //playerController = myCar.GetComponent<PlayerController>();
         //randPlanets = new RandomPlanets();
         //randomize = new RandomPlanets();
         SetupMultiplayerGame();
+    }
+
+    void OnApplicationPause(bool val)
+    {
+        if(val == true)
+        {
+            player2Destroyed = true;
+            GameOver(2);
+        }
+
+        if (val == false)
+        {
+            player2Destroyed = true;
+            GameOver(2);
+        }
     }
 
     void Update() {
@@ -84,6 +110,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             GameObject planet = Instantiate(planetPrefab, t[i].planet1, Quaternion.identity);
             planet.transform.localScale = new Vector3(t[i].scale1, t[i].scale1, t[i].scale1);
             planet.transform.parent = planetsParent.transform;
+            planet.transform.GetComponent<Renderer>().material = planet_mats[0];
         }
 
         if (c.scale2 != 0.0f)
@@ -91,6 +118,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             GameObject planet = Instantiate(planetPrefab, t[i].planet2, Quaternion.identity);
             planet.transform.localScale = new Vector3(t[i].scale2, t[i].scale2, t[i].scale2);
             planet.transform.parent = planetsParent.transform;
+            planet.transform.GetComponent<Renderer>().material = planet_mats[1];
         }
 
         if (c.scale3 != 0.0f)
@@ -98,6 +126,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             GameObject planet = Instantiate(planetPrefab, t[i].planet3, Quaternion.identity);
             planet.transform.localScale = new Vector3(t[i].scale3, t[i].scale3, t[i].scale3);
             planet.transform.parent = planetsParent.transform;
+            planet.transform.GetComponent<Renderer>().material = planet_mats[2];
         }
 
         if (c.scale4 != 0.0f)
@@ -105,6 +134,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             GameObject planet = Instantiate(planetPrefab, t[i].planet4, Quaternion.identity);
             planet.transform.localScale = new Vector3(t[i].scale4, t[i].scale4, t[i].scale4);
             planet.transform.parent = planetsParent.transform;
+            planet.transform.GetComponent<Renderer>().material = planet_mats[3];
         }
         return i;
     }
@@ -125,32 +155,36 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             Debug.Log("Setting up car for " + nextParticipantId);
             // 3
             Vector3 carStartPoint = Vector3.zero;
-            
+
             if (nextParticipantId == _myParticipantId)
             {
-                if(i == 0)
+                if (i == 0)
                 {
-                    int rand = InitializePlanets(0,0);
+                    int rand = InitializePlanets(0, 0);
                     //planets = randomize.CreatePlanets();
                     //DoPlanetUpdate(planets);
                     DoRandomUpdate(rand);
                 }
+                
                 // 4
                 carStartPoint = new Vector3(_startingPoint.x, _startingPoint.y, 0);
+                player1Health.color = colors[i];
                 myCar = (Instantiate(myCarPrefab, carStartPoint, Quaternion.identity) as GameObject);
                 myCar.GetComponent<PlayerController>().SetCarChoice(i + 1, true);
                 myCar.GetComponent<PlayerController>().SetMyTurn(i);
                 myCar.GetComponent<Timer>().enabled = true;
                 CircleSlider.GetComponent<RadialSlider>().enabled = true;
+                /*if (i == 1)
+                {
+                    Rotator.SetActive(false);
+                    PowerSlider.SetActive(false);
+                }*/
 
                 //myCar.transform.position = carStartPoint;
             }
             else
             {
                 if (i == 1) {
-                    //PowerSlider.SetActive(false);
-                    //Rotator.SetActive(false);
-                    //GameObject Planets = GameObject.Find("Planets");
                     foreach (Transform planet in planetsParent.transform)
                     {
                         planet.position = new Vector3(-planet.position.x, planet.position.y, planet.position.z);
@@ -159,6 +193,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
                 }
                 //Mirror Planets
                 // 5
+                player2Health.color = colors[i];
                 carStartPoint = new Vector3(_startingPoint.x * -1, _startingPoint.y, 0);
                 //Debug.Log("opponent is instantiated at " + carStartPoint.ToString());
                 opponentCar = (Instantiate(opponentPrefab, carStartPoint, Quaternion.Euler(0, 0, -180f)) as GameObject);
@@ -242,6 +277,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     {
         //PowerSlider.SetActive(true);
         //Rotator.SetActive(true);
+        _lastUpdateTime_Timer = Time.time;
         playerTurn = turn;
         //Timer.StartCounting();
         //rotationText.text = playerTurn.ToString();
@@ -282,7 +318,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     void CheckForTimeOuts()
     {
-        foreach (string participantId in _opponentScripts.Keys)
+        /*foreach (string participantId in _opponentScripts.Keys)
         {
             
             if (_opponentScripts[participantId].lastUpdateTime < Time.time - timeOutThreshold)
@@ -293,6 +329,10 @@ public class GameController : MonoBehaviour, MPUpdateListener {
                 //PlayerLeftRoom(participantId);
                 Invoke("LeaveMPGame", 3.0f);
             }
+        }*/
+        if (_lastUpdateTime_Timer < Time.time - timeOutThreshold)
+        {
+            GameOver(2);
         }
     }
 
@@ -363,6 +403,8 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     }
 
     public void ResetTimer() {
+        //Rotator.SetActive(true);
+        //PowerSlider.SetActive(true);
         myCar.GetComponent<Timer>().ResetCount();
     }
 

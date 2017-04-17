@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour {
     private Touch touch;
 
     public Material[] spaceCraftMaterials;
+    public Color32[] colors;
 
     private int myTurn;
 
@@ -28,19 +29,30 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject menuPanel;
 
-    public Slider speedSilder;
+    //public Slider speedSilder;
 
     //public Text rotationText;  // public if you want to drag your text object in there manually
     //public Text spawnText;
     private Timer timer;
+
+    //private Text player1Health;
+    
     //int rotationZ;
 
     //private bool playerDestroyed;
 
     public AudioSource shoot;
 
+    public GameObject Rotator;
+    public GameObject PowerSlider;
+
+    private Slider speedSilder;
+
     private int health = 100;
     private Text player1Health;
+    //private Text player2Health;
+
+    //private Color32[] colors_health = new Color32[2];
 
     //private int numBoltsShot = 0;
 
@@ -48,6 +60,9 @@ public class PlayerController : MonoBehaviour {
     void Start() {
         //rotationText = GameObject.Find("rotation").GetComponent<Text>();
         player1Health = GameObject.Find("player1Health").GetComponent<Text>();
+        //player2Health = GameObject.Find("player2Health").GetComponent<Text>();
+        //colors_health[0] = new Color32(106, 0, 236, 255);
+        //colors_health[1] = new Color32(216, 137, 19, 255);
         //spawnText = GameObject.Find("spawn").GetComponent<Text>();
         menuPanel = GameObject.Find("MenuPanel");
         timer = gameObject.GetComponent<Timer>();
@@ -55,6 +70,8 @@ public class PlayerController : MonoBehaviour {
         gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         speedSilder = GameObject.Find("Slider").GetComponent<Slider>();
         //playerDestroyed = false;
+        Rotator = GameObject.Find("Rotator");
+        PowerSlider = GameObject.Find("Slider");
     }
 
     // Update is called once per frame
@@ -73,8 +90,7 @@ public class PlayerController : MonoBehaviour {
 
 				else if (touch.phase == TouchPhase.Moved)
 				{
-
-                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && gameController.getNumBolts() == 0)
+                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && touch.position.x > (Screen.width / 8) && gameController.getNumBolts() == 0)
                     {  
                         transform.Translate(Vector3.up * touch.deltaPosition.y * 2.5f * Time.deltaTime, Space.World);
                         // initially, the temporary vector should equal the player's position
@@ -84,7 +100,6 @@ public class PlayerController : MonoBehaviour {
                         // re-assigning the transform's position will clamp it
                         transform.position = clampedPosition;
                     }
-
                 }
 				else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
 				{
@@ -104,8 +119,10 @@ public class PlayerController : MonoBehaviour {
                                 gameController.incNumBolts();
                                 Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
                                 timer.setPauseCount(true);
+                                //Rotator.SetActive(false);
+                                //PowerSlider.SetActive(false);
                                 //gameObject.GetComponent<Timer>().enabled = false;
-							    shoot.Play();
+                                shoot.Play();
 							    try
 							    {
 								    gameController.DoShotUpdate(shotSpawn.position, shotSpawn.eulerAngles.z, speedSilder.value);
@@ -156,11 +173,15 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Num of bolts: " + gameController.getNumBolts());
             Debug.Log("Time Left: " + timer.getTimeLeft());*/
             
-            /*else if (gameController.getPlayerTurn() != myTurn && gameController.getNumBolts() == 0 && GetComponent<Timer>().getTimeLeft() == 0)
+            /*if (gameController.getPlayerTurn() == myTurn && gameController.getNumBolts() == 0)
             {
+                Debug.Log("Setting sliders to active");
                 //gameController.setPlayerTurn(1 - myTurn);
-                GetComponent<Timer>().setTimeLeft(30);
-
+                if(!PowerSlider.active)
+                {
+                    PowerSlider.SetActive(true);
+                    Rotator.SetActive(true);
+                }
             }*/
 
         }
@@ -170,6 +191,18 @@ public class PlayerController : MonoBehaviour {
     public void SetCarChoice(int carNum, bool isMultiplayer)
     {
         transform.FindChild("Player").GetComponent<Renderer>().material = spaceCraftMaterials[carNum - 1];
+        //player1Health.color = colors[carNum - 1];
+        /*if(carNum == 1)
+        {
+            player1Health.color = colors_health[0];
+            player2Health.color = colors_health[1];
+        }
+        else
+        {
+            player1Health.color = colors_health[1];
+            player2Health.color = colors_health[0];
+        }*/
+
     }
 
     public void SetMyTurn(int i) {

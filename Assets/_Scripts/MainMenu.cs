@@ -1,19 +1,33 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+
+
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour, MPLobbyListener
 {
     private bool _showLobbyDialog;
     private string _lobbyMessage;
-    public GUISkin guiSkin;
+    //public GUISkin guiSkin;
+	public GameObject soundPanel;
+	public GameObject connectionPanel;
+	public GameObject mainmenuPanel;
+	public Text t;
+	public GameObject logo;
 
 	private GUIStyle currentStyle = null;
 
     // Use this for initialization
     void Start () {
         MultiplayerController.Instance.TrySilentSignIn();
+		soundPanel.SetActive (false);
+		connectionPanel.SetActive (false);
+
     }
 
+	/*
     void OnGUI()
     {
         if (_showLobbyDialog)
@@ -51,13 +65,41 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
 		result.SetPixels( pix );
 		result.Apply();
 		return result;
-	}
+	}*/
 
     public void PlayGame()
     {
+		connectionPanel.SetActive (true);
+		mainmenuPanel.SetActive (false);
+		logo.SetActive (false);
+
+		/* Check if user is connected to internet*/
+
+		/*
+		string url = "https://google.com";
+		WWW www = new WWW(url);
+
+		if (www.text == "")
+		{
+			//No connection/some error
+
+			//t.text = "You are not connected to internet... Please connect and try again!";
+			t.text = "not ok";
+			return;
+		}
+
+		*/
+
+		if (Application.internetReachability == NetworkReachability.NotReachable)
+		{
+			t.text = "You are not connected to internet... Please connect and try again!";
+			//t.text = "not ok";
+			return;
+		}
         Debug.Log("Pressed play");
-        _lobbyMessage = "Starting a multi-player game...";
-        _showLobbyDialog = true;
+        //_lobbyMessage = "Starting a multi-player game...";
+		t.text = "Starting a multi-player game...";
+        //_showLobbyDialog = true;
         MultiplayerController.Instance.lobbyListener = this;
         MultiplayerController.Instance.SignInAndStartMPGame();
 
@@ -87,7 +129,7 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
 
     public void SetLobbyStatusMessage(string message)
     {
-        _lobbyMessage = message;
+		t.text = message;
     }
 
     public void HideLobby()

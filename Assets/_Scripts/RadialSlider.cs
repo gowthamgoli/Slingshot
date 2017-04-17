@@ -61,15 +61,13 @@ public class RadialSlider : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }*/
 
         if (ray != null && input != null)
-        {   // 
-            //(playerController.GetMyTurn() == gameController.getPlayerTurn())
+        {   
             while (Application.isPlaying && gameController.getPlayerTurn() == playerController.GetMyTurn() && gameController.getNumBolts() == 0)
             {
 
                 // TODO: if mousebutton down
                 if (isPointerDown)
                 {
-
                     Vector2 localPos; // Mouse position  
                     RectTransformUtility.ScreenPointToLocalPointInRectangle(transform as RectTransform, Input.mousePosition, ray.eventCamera, out localPos);
 
@@ -80,25 +78,15 @@ public class RadialSlider : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
                     {
                         angle = angle + 360f / 360f;
                     }
-
-
+                    
                     GetComponent<Image>().fillAmount = angle;
-
-
+                    
                     GetComponent<Image>().color = Color.Lerp(Color.green, Color.red, angle);
-
-                    //if (angle <= 0.5f) {
-                    angle = -angle;
-                    //    }
-
-                    text.text = ((int)(-angle * 360f)).ToString();
                     text.color = Color.Lerp(Color.green, Color.red, angle);
 
-                    //Debug.Log(localPos+" : "+angle);
+                    angle = -angle;
 
-
-                    //ship.transform.rotation = Quaternion.Euler (0f, 0f, angle);
-                    Debug.Log("angle: " + angle);
+                    text.text = ((int)(-angle * 360f)).ToString();
                     ship.transform.eulerAngles = new Vector3(0f, 0f, angle * 360f);
 
                 }
