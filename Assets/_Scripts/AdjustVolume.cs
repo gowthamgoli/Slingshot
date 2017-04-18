@@ -4,15 +4,12 @@ using System.Collections;
 
 public class AdjustVolume : MonoBehaviour {
 
-
-
 		public Slider mySlider;
 
 		public void changeVolume ()
 		{
 			AudioListener.volume = mySlider.value;
+            PlayerPrefs.SetFloat("SoundLevel", mySlider.value);
 		}
-
-
 
 }

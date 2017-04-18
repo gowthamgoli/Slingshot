@@ -7,13 +7,14 @@ public class Pause : MonoBehaviour {
 
 	public GameObject pauseButton;
 	public GameObject pauseMenu;
+    //public GameObject MainMenuButton;
 
     void Start() {
         //pauseMenu.SetActive(false);
     }
 
 	public void showPauseMenu() {
-        Debug.Log("pressed pause");
+        //Debug.Log("pressed pause");
 		pauseMenu.SetActive (true);
 		pauseButton.SetActive (false);
 	}
@@ -22,6 +23,11 @@ public class Pause : MonoBehaviour {
 		pauseMenu.SetActive (false);
 		pauseButton.SetActive (true);
 	}
+
+    public void MainMenuButton()
+    {
+        MultiplayerController.Instance.LeaveGame();
+    }
 
     public void Quit()
     {

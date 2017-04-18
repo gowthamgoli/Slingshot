@@ -58,7 +58,7 @@ public class Configuration : MonoBehaviour
 
     public Configuration[] getList()
     {
-        Configuration[] t = new Configuration[83];
+        Configuration[] t = new Configuration[121];
 
         t[0] = new Configuration(new Vector3(4.928701f, -0.4573321f, 0.0f), 2.127476f, new Vector3(-2.189986f, -2.585663f, 0.0f), 3.311954f);
         t[1] = new Configuration(new Vector3(5.307081f, 1.705047f, 0.0f), 2.051611f, new Vector3(-2.289449f, 0.05955601f, 0.0f), 3.708642f);
@@ -148,6 +148,49 @@ public class Configuration : MonoBehaviour
         t[80] = new Configuration(new Vector3(-1.429159f, -1.449423f, 0.0f), 1.645156f, new Vector3(4.396297f, 2.079528f, 0.0f), 2.579956f, new Vector3(-2.76219f, 3.348713f, 0.0f), 3.193733f);
         t[81] = new Configuration(new Vector3(4.980085f, -1.297804f, 0.0f), 1.647194f, new Vector3(-4.506456f, -1.889966f, 0.0f), 2.421761f, new Vector3(2.555214f, 3.103316f, 0.0f), 2.960657f);
         t[82] = new Configuration(new Vector3(3.08898f, 3.03828f, 0.0f), 1.615071f, new Vector3(-1.719164f, 2.327501f, 0.0f), 2.330205f, new Vector3(0.257184f, -3.354056f, 0.0f), 3.689611f);
+
+        /////// 
+        /////
+        ///
+        // 4 planets configurations
+        t[83] = new Configuration(new Vector3(-2.3856f, 2.625333f, 0.0f), 1.748101f, new Vector3(1.227796f, 0.03789186f, 0.0f), 2.718885f, new Vector3(-3.577732f, -1.69517f, 0.0f), 2.465808f, new Vector3(3.091098f, -3.443936f, 0.0f), 3.179548f);
+        t[84] = new Configuration(new Vector3(-0.6509905f, -1.110992f, 0.0f), 1.564866f, new Vector3(4.47647f, -1.27934f, 0.0f), 2.63138f, new Vector3(-4.460072f, 2.835867f, 0.0f), 2.360178f, new Vector3(2.563242f, 3.474443f, 0.0f), 3.271333f);
+        t[85] = new Configuration(new Vector3(4.194393f, 2.537545f, 0.0f), 1.677617f, new Vector3(-0.2856307f, 3.138267f, 0.0f), 2.621253f, new Vector3(-3.91327f, 1.810805f, 0.0f), 2.03498f, new Vector3(0.7345362f, -1.878384f, 0.0f), 3.578801f);
+        t[86] = new Configuration(new Vector3(3.912343f, 2.500135f, 0.0f), 1.718066f, new Vector3(-4.542606f, -3.03021f, 0.0f), 2.709571f, new Vector3(-1.506488f, 0.8201761f, 0.0f), 2.167931f, new Vector3(1.865334f, -2.323816f, 0.0f), 2.958683f);
+        t[87] = new Configuration(new Vector3(4.17307f, 2.18729f, 0.0f), 1.52462f, new Vector3(2.043998f, -1.314887f, 0.0f), 2.738459f, new Vector3(-3.307121f, -2.310978f, 0.0f), 2.309124f, new Vector3(-3.753515f, 2.133792f, 0.0f), 3.165291f);
+        t[88] = new Configuration(new Vector3(-4.911602f, 0.5356102f, 0.0f), 1.688243f, new Vector3(4.651419f, -2.602457f, 0.0f), 2.23475f, new Vector3(-1.488575f, 2.15619f, 0.0f), 2.141674f, new Vector3(0.8649116f, -3.323077f, 0.0f), 2.883875f);
+        t[89] = new Configuration(new Vector3(-3.064872f, -2.81712f, 0.0f), 1.806343f, new Vector3(4.662792f, -2.95397f, 0.0f), 2.103802f, new Vector3(-4.699272f, 2.334918f, 0.0f), 2.339417f, new Vector3(4.596391f, 3.455923f, 0.0f), 2.862715f);
+        t[90] = new Configuration(new Vector3(-4.164029f, -0.1872168f, 0.0f), 1.708891f, new Vector3(3.865581f, -2.098067f, 0.0f), 2.175365f, new Vector3(1.829731f, 2.073132f, 0.0f), 2.216628f, new Vector3(-1.920701f, 3.05288f, 0.0f), 3.232954f);
+        t[91] = new Configuration(new Vector3(2.970524f, -1.804432f, 0.0f), 1.831476f, new Vector3(3.3838f, 2.873955f, 0.0f), 2.151658f, new Vector3(-3.397508f, 2.907868f, 0.0f), 2.429694f, new Vector3(-2.086404f, -2.99667f, 0.0f), 3.083268f);
+        t[92] = new Configuration(new Vector3(0.8854942f, 1.262607f, 0.0f), 1.517446f, new Vector3(3.764759f, -0.7311996f, 0.0f), 2.183389f, new Vector3(-1.37093f, -3.206427f, 0.0f), 2.509048f, new Vector3(-3.667188f, 3.495159f, 0.0f), 3.648772f);
+        t[93] = new Configuration(new Vector3(-3.670525f, -3.148666f, 0.0f), 1.683917f, new Vector3(-1.751953f, 1.438258f, 0.0f), 2.506538f, new Vector3(3.475957f, 1.185417f, 0.0f), 2.554963f, new Vector3(-0.3933592f, -3.025586f, 0.0f), 2.824375f);
+        t[94] = new Configuration(new Vector3(4.240933f, -2.675766f, 0.0f), 1.772334f, new Vector3(-4.21002f, -1.55931f, 0.0f), 2.290845f, new Vector3(1.378783f, 2.320106f, 0.0f), 2.42572f, new Vector3(-3.011395f, 3.353319f, 0.0f), 3.525865f);
+        t[95] = new Configuration(new Vector3(-3.14398f, 2.001323f, 0.0f), 1.719925f, new Vector3(-0.6337495f, 0.4885221f, 0.0f), 2.274134f, new Vector3(-1.700612f, -3.322177f, 0.0f), 2.525454f, new Vector3(4.951181f, -1.653306f, 0.0f), 2.99746f);
+        t[96] = new Configuration(new Vector3(-3.790672f, -1.10404f, 0.0f), 1.73465f, new Vector3(0.7104273f, 0.6230478f, 0.0f), 2.186179f, new Vector3(-3.620525f, 2.853541f, 0.0f), 2.396259f, new Vector3(3.211464f, -2.55705f, 0.0f), 3.131807f);
+        t[97] = new Configuration(new Vector3(3.265774f, -2.763532f, 0.0f), 1.858834f, new Vector3(-3.543487f, 3.289646f, 0.0f), 2.178005f, new Vector3(-3.204251f, -0.7644414f, 0.0f), 2.641343f, new Vector3(1.407575f, 0.8682455f, 0.0f), 3.485913f);
+        t[98] = new Configuration(new Vector3(-0.1813774f, 2.764971f, 0.0f), 1.854919f, new Vector3(3.308644f, 1.912559f, 0.0f), 2.549222f, new Vector3(-4.229564f, -1.928838f, 0.0f), 2.124754f, new Vector3(4.171041f, -3.020131f, 0.0f), 3.313008f);
+        t[99] = new Configuration(new Vector3(-4.805464f, 0.8583928f, 0.0f), 1.973788f, new Vector3(3.3597f, 0.5310222f, 0.0f), 2.412242f, new Vector3(0.4370217f, 2.950949f, 0.0f), 2.273002f, new Vector3(-3.261993f, -3.093802f, 0.0f), 2.891962f);
+        t[100] = new Configuration(new Vector3(-3.894855f, -1.450296f, 0.0f), 1.847593f, new Vector3(0.2377791f, -1.468042f, 0.0f), 2.050231f, new Vector3(-3.952596f, 2.151559f, 0.0f), 2.743475f, new Vector3(4.78642f, 2.184894f, 0.0f), 3.525527f);
+        t[101] = new Configuration(new Vector3(-0.4203935f, -2.251703f, 0.0f), 1.652792f, new Vector3(0.09762001f, 0.6454258f, 0.0f), 2.508091f, new Vector3(-4.410101f, -3.312477f, 0.0f), 2.312858f, new Vector3(3.500081f, -2.199612f, 0.0f), 3.059868f);
+        t[102] = new Configuration(new Vector3(-2.789263f, -0.2532163f, 0.0f), 1.871945f, new Vector3(4.09822f, -2.110019f, 0.0f), 2.554865f, new Vector3(-2.516863f, 2.769263f, 0.0f), 2.353777f, new Vector3(3.900887f, 3.175241f, 0.0f), 2.80188f);
+        t[103] = new Configuration(new Vector3(-4.465566f, 0.9947633f, 0.0f), 1.77156f, new Vector3(0.1814504f, -1.019617f, 0.0f), 2.264566f, new Vector3(3.940314f, -3.254554f, 0.0f), 2.048271f, new Vector3(3.943699f, 2.216297f, 0.0f), 3.598153f);
+        t[104] = new Configuration(new Vector3(-1.16309f, 2.473551f, 0.0f), 1.896032f, new Vector3(-1.614397f, -2.85223f, 0.0f), 2.24973f, new Vector3(3.564816f, -3.336731f, 0.0f), 2.489362f, new Vector3(3.056247f, 0.8964833f, 0.0f), 3.553732f);
+        t[105] = new Configuration(new Vector3(-2.797647f, -0.811677f, 0.0f), 1.734742f, new Vector3(-4.015422f, 2.725442f, 0.0f), 2.50622f, new Vector3(4.441824f, -0.9758555f, 0.0f), 2.613989f, new Vector3(1.403785f, 0.9057091f, 0.0f), 2.911325f);
+        t[106] = new Configuration(new Vector3(3.889093f, 1.994745f, 0.0f), 1.594663f, new Vector3(2.925616f, -2.060919f, 0.0f), 2.102084f, new Vector3(-0.4687471f, 0.7759043f, 0.0f), 2.162519f, new Vector3(-3.402733f, -2.416163f, 0.0f), 3.527098f);
+        t[107] = new Configuration(new Vector3(2.680769f, -1.351949f, 0.0f), 1.913674f, new Vector3(-1.341154f, 2.409949f, 0.0f), 2.386069f, new Vector3(-4.475202f, -3.321749f, 0.0f), 2.093642f, new Vector3(4.664976f, 2.75072f, 0.0f), 2.915256f);
+        t[108] = new Configuration(new Vector3(-3.202027f, -0.02805519f, 0.0f), 1.939408f, new Vector3(2.270087f, -3.315723f, 0.0f), 2.033576f, new Vector3(3.349248f, 2.188791f, 0.0f), 2.106664f, new Vector3(-2.5813f, -3.358179f, 0.0f), 2.7908f);
+        t[109] = new Configuration(new Vector3(-4.166007f, 0.869835f, 0.0f), 1.741526f, new Vector3(0.1421266f, -1.245396f, 0.0f), 2.522384f, new Vector3(4.330799f, -3.419623f, 0.0f), 2.629944f, new Vector3(-0.7969098f, 3.219992f, 0.0f), 3.17874f);
+        t[110] = new Configuration(new Vector3(-1.431643f, 3.050161f, 0.0f), 1.686971f, new Vector3(-3.219305f, -0.3034844f, 0.0f), 2.741788f, new Vector3(2.984264f, -1.077206f, 0.0f), 2.160744f, new Vector3(2.76845f, 3.342992f, 0.0f), 3.689666f);
+        t[111] = new Configuration(new Vector3(-2.651694f, 1.761364f, 0.0f), 1.744399f, new Vector3(-3.135359f, -1.92109f, 0.0f), 2.531403f, new Vector3(4.441928f, 1.181488f, 0.0f), 2.383256f, new Vector3(2.410805f, -2.836545f, 0.0f), 3.514788f);
+        t[112] = new Configuration(new Vector3(-2.441535f, -1.670719f, 0.0f), 1.928004f, new Vector3(1.855566f, 2.693551f, 0.0f), 2.707617f, new Vector3(3.589709f, -2.275444f, 0.0f), 2.263227f, new Vector3(-4.867836f, 0.6893888f, 0.0f), 2.981644f);
+        t[113] = new Configuration(new Vector3(-3.833594f, 2.171568f, 0.0f), 1.551683f, new Vector3(-1.627369f, -1.883455f, 0.0f), 2.715661f, new Vector3(3.915203f, -0.3969646f, 0.0f), 2.145975f, new Vector3(4.622126f, 3.397693f, 0.0f), 2.946353f);
+        t[114] = new Configuration(new Vector3(-1.808858f, -2.0382f, 0.0f), 1.645818f, new Vector3(-2.360832f, 0.5546994f, 0.0f), 2.000651f, new Vector3(2.806509f, 0.4822729f, 0.0f), 2.363951f, new Vector3(2.884513f, -3.244616f, 0.0f), 2.85673f);
+        t[115] = new Configuration(new Vector3(-1.539743f, -0.8314763f, 0.0f), 1.633555f, new Vector3(1.627755f, -2.076948f, 0.0f), 2.700283f, new Vector3(2.301224f, 3.272509f, 0.0f), 2.321606f, new Vector3(-4.291862f, -3.329371f, 0.0f), 3.104833f);
+        t[116] = new Configuration(new Vector3(-2.792563f, 0.8923134f, 0.0f), 1.553367f, new Vector3(4.606887f, 0.795844f, 0.0f), 2.649044f, new Vector3(-0.8583374f, 3.232071f, 0.0f), 2.337054f, new Vector3(0.7738919f, -3.062574f, 0.0f), 3.06172f);
+        t[117] = new Configuration(new Vector3(4.21103f, -0.5203862f, 0.0f), 1.550545f, new Vector3(1.04306f, 1.445592f, 0.0f), 2.208184f, new Vector3(-3.059339f, 2.692093f, 0.0f), 2.505475f, new Vector3(-3.520987f, -3.486117f, 0.0f), 3.17862f);
+        t[118] = new Configuration(new Vector3(2.092701f, -1.01572f, 0.0f), 1.628842f, new Vector3(-4.076261f, 2.699263f, 0.0f), 2.641083f, new Vector3(-4.513389f, -1.138808f, 0.0f), 2.678525f, new Vector3(4.798189f, 0.9686286f, 0.0f), 3.166115f);
+        t[119] = new Configuration(new Vector3(2.164489f, 2.226369f, 0.0f), 1.591296f, new Vector3(-4.569635f, -3.413908f, 0.0f), 2.688396f, new Vector3(-1.021471f, -0.01945019f, 0.0f), 2.573167f, new Vector3(3.835453f, -1.333915f, 0.0f), 2.78803f);
+        t[120] = new Configuration(new Vector3(4.510405f, 3.461136f, 0.0f), 1.883635f, new Vector3(0.1853161f, 1.522228f, 0.0f), 2.604496f, new Vector3(3.831084f, -2.350821f, 0.0f), 2.50968f, new Vector3(-4.512156f, -0.4855089f, 0.0f), 2.959972f);
 
         //Configuration (new Vector3 (1.0f, 1.0f, 1.0f), new Vector3 (1.0f, 1.0f, 1.0f), 1.0f, 1.2f);
         return t;

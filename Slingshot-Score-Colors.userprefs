@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/_Scripts/GameController.cs">
+    <Files>
+      <File FileName="Assets/_Scripts/ScrollSnapRect.cs" Line="75" Column="1" />
+      <File FileName="Assets/unity-ui-extensions/Scripts/Layout/ScrollSnapBase.cs" Line="1" Column="1" />
+      <File FileName="Assets/_Scripts/MainMenu.cs" Line="76" Column="38" />
+      <File FileName="Assets/_Scripts/MenuToggle.cs" Line="42" Column="3" />
+      <File FileName="Assets/_Scripts/Menu.cs" Line="42" Column="10" />
+      <File FileName="Assets/_Scripts/GameController.cs" Line="118" Column="10" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

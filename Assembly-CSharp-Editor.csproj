@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{50D5217D-1385-477E-3C08-D1F7C9AFDC41}</ProjectGuid>
+    <ProjectGuid>{04566140-20BA-321C-B1D3-A17B3E091F1C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -65,15 +65,32 @@
      <Compile Include="Assets\GooglePlayGames\Editor\xcode\Sections.cs" />
      <Compile Include="Assets\GooglePlayGames\Editor\xcode\Serializer.cs" />
      <Compile Include="Assets\GooglePlayGames\Editor\xcode\Utils.cs" />
+     <Compile Include="Assets\unity-ui-extensions\Editor\AccordionElementEditor.cs" />
+     <Compile Include="Assets\unity-ui-extensions\Editor\BoxSliderEditor.cs" />
+     <Compile Include="Assets\unity-ui-extensions\Editor\CanvasGroupActivator.cs" />
+     <Compile Include="Assets\unity-ui-extensions\Editor\CompressionTests.cs" />
+     <Compile Include="Assets\unity-ui-extensions\Editor\NonDrawingGraphicEditor.cs" />
+     <Compile Include="Assets\unity-ui-extensions\Editor\TextPicEditor.cs" />
+     <Compile Include="Assets\unity-ui-extensions\Editor\UIExtensionsMenuOptions.cs" />
+     <Compile Include="Assets\unity-ui-extensions\Editor\uGUITools.cs" />
+     <None Include="Assets\unity-ui-extensions\Shaders\UIAdditive.shader" />
      <None Include="Assets\Plugins\Android\MainLibProj\AndroidManifest.xml" />
+     <None Include="Assets\unity-ui-extensions\Shaders\UISoftAdditive.shader" />
      <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
+     <None Include="Assets\unity-ui-extensions\Shaders\UIParticleHidden.shader" />
+     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />
      <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
+     <None Include="Assets\unity-ui-extensions\Scripts\Utilities\Serialization\Surrogates\SurrogatesReadMe.txt" />
      <None Include="Assets\Fonts\Jupiter\LICENSE.txt" />
      <None Include="Assets\Textures and Sprites\SF UI\Background\LICENSE.txt" />
+     <None Include="Assets\unity-ui-extensions\Shaders\UIImageCrop.shader" />
+     <None Include="Assets\unity-ui-extensions\Shaders\UILinearDodge.shader" />
      <None Include="Assets\Materials\UI-Default-No-Alpha.shader" />
      <None Include="Assets\Shader\Additive_Base.shader" />
      <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
+     <None Include="Assets\unity-ui-extensions\Shaders\UIMultiply.shader" />
      <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
+     <None Include="Assets\unity-ui-extensions\Shaders\UIScreen.shader" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
@@ -123,13 +140,13 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
  <Reference Include="Google.IOSResolver">
- <HintPath>C:/Users/Gowtham Goli/Desktop/AddedMenu/Assets/PlayServicesResolver/Editor/Google.IOSResolver.dll</HintPath>
+ <HintPath>C:/Users/Gowtham Goli/Desktop/game/Assets/PlayServicesResolver/Editor/Google.IOSResolver.dll</HintPath>
  </Reference>
  <Reference Include="Google.JarResolver">
- <HintPath>C:/Users/Gowtham Goli/Desktop/AddedMenu/Assets/PlayServicesResolver/Editor/Google.JarResolver.dll</HintPath>
+ <HintPath>C:/Users/Gowtham Goli/Desktop/game/Assets/PlayServicesResolver/Editor/Google.JarResolver.dll</HintPath>
  </Reference>
  <Reference Include="Google.VersionHandler">
- <HintPath>C:/Users/Gowtham Goli/Desktop/AddedMenu/Assets/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
+ <HintPath>C:/Users/Gowtham Goli/Desktop/game/Assets/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
@@ -146,7 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{81E385A3-644B-F67E-FB55-C7545F8561DB}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
+      <Project>{1AF7E356-2D58-7119-FE6C-C1ED31A62E64}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

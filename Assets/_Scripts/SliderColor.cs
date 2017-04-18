@@ -27,7 +27,7 @@ public class SliderColor : MonoBehaviour {
     // Invoked when the value of the slider changes.
     public void ValueChangeCheck()
     {
-        Debug.Log(mainSlider.value);
+        //Debug.Log(mainSlider.value);
         Fill.color = Color.Lerp(Color.red, Color.green, mainSlider.value/100);
         handle.color = Color.Lerp(Color.red*y, Color.green*y, mainSlider.value / 100);
         background.color = Color.Lerp(Color.red*x, Color.green*x, mainSlider.value / 100);

@@ -21,7 +21,7 @@ public class Menu : MonoBehaviour, MPLobbyListener {
     }
 
 	public void PlayGame () {
-        Debug.Log("Pressed play");
+        //Debug.Log("Pressed play");
         _lobbyMessage = "Starting a multi-player game...";
         _showLobbyDialog = true;
         MultiplayerController.Instance.lobbyListener = this;
@@ -30,13 +30,13 @@ public class Menu : MonoBehaviour, MPLobbyListener {
 
     public void Multiplayer()
     {
-        Debug.Log("Pressed multi");
+        //Debug.Log("Pressed multi");
         SceneManager.LoadScene(1);
     }
 
     public void Logout()
     {
-        Debug.Log("Pressed Logout");
+        //Debug.Log("Pressed Logout");
         if (MultiplayerController.Instance.IsAuthenticated()){
             MultiplayerController.Instance.SignOut();
         }

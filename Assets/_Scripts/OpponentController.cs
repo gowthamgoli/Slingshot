@@ -105,14 +105,15 @@ public class OpponentController : MonoBehaviour {
     {
         
         health -= 34;
-        Debug.Log("Opponent's health : " + health);
+        if (health < 0) health = 0;
+        //Debug.Log("Opponent's health : " + health);
         player2Health.text = health.ToString();
-        if (health < 0)
+        if (health == 0)
         {
-            Debug.Log("You have won the game");
+            //Debug.Log("You have won the game");
             //opponentDestroyed = true;
             gameController.setPlayer2Destroyed(true);
-            gameController.GameOver(1);
+            //gameController.GameOver(1);
             Destroy(gameObject);
         }
     }

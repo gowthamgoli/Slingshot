@@ -121,21 +121,21 @@ public class MultiplayerController : RealTimeMultiplayerListener
     #region Interface Methods
     public void OnRoomSetupProgress(float percent)
     {
-        ShowMPStatus("We are " + percent + "% done with setup");
+        ShowMPStatus("Trying to find an opponent...");
     }
 
     public void OnRoomConnected(bool success)
     {
         if (success)
         {
-            ShowMPStatus("We are connected to the room! I would probably start our game now.");
+            ShowMPStatus("Opponent found! Setting up your spaceship...");
             lobbyListener.HideLobby();
             lobbyListener = null;
             SceneManager.LoadScene(1);
         }
         else
         {
-            ShowMPStatus("Uh-oh. Encountered some error connecting to the room.");
+            ShowMPStatus("Uh-oh! Failed to connect to a room. Please try again");
         }
     }
 
@@ -246,7 +246,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
         else if (messageType == 'P' && data.Length == _updateMessageLength_Planets)
         {
-            Debug.Log("Received planet parametes");
+            //Debug.Log("Received planet parametes");
             int p = (_updateMessageLength_Planets - 2) / 12;
             float[] scales = new float[p];
             Vector2[] positions = new Vector2[p];
@@ -260,7 +260,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
                 scales[i] = System.BitConverter.ToSingle(data, k);
                 k = k + 4;
             }
-            Debug.Log("Unzipped planet params");
+            //Debug.Log("Unzipped planet params");
             //int val = System.BitConverter.ToInt32(data, 2);
             // Debug.Log("Player " + senderId + " sets turn to " + turn);
             // We'd better tell our GameController about this.
@@ -372,7 +372,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
             _updateMessage_Planets.AddRange((System.BitConverter.GetBytes(positions[i].y)));
             _updateMessage_Planets.AddRange((System.BitConverter.GetBytes(scales[i])));
         }
-        Debug.Log("Added to byte array and sending");
+        //Debug.Log("Added to byte array and sending");
         byte[] messageToSend = _updateMessage_Planets.ToArray();
         //Debug.Log("Sending my update message  " + messageToSend + " to all players in the room");
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, messageToSend);

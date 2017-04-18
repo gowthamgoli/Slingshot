@@ -26,6 +26,8 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     private int playerTurn = 0;
 
     public GameObject CircleSlider;
+    public GameObject gameoverPanel;
+    public Text gameoverText;
     //public RadialSlider 
 
     //public Text spawnText;  // public if you want to drag your text object in there manually
@@ -44,10 +46,11 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public GameObject Rotator;
     public GameObject PowerSlider;
+    public GameObject CountDown;
 
     private RandomPlanets randomize;
     private List<GameObject> planets;
-    //public Text CountDown;
+    //
 
     Configuration[] t;
     Configuration obj;
@@ -68,6 +71,8 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         t = obj.getList();
 
         _lastUpdateTime_Timer = Time.time;
+        gameoverText = GameObject.Find("GameOverMessage").GetComponent<Text>();
+        gameoverPanel.SetActive(false);
         
         //playerController = myCar.GetComponent<PlayerController>();
         //randPlanets = new RandomPlanets();
@@ -109,6 +114,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         {
             GameObject planet = Instantiate(planetPrefab, t[i].planet1, Quaternion.identity);
             planet.transform.localScale = new Vector3(t[i].scale1, t[i].scale1, t[i].scale1);
+			planet.transform.GetComponent<Rigidbody> ().mass = planet.transform.localScale.x * 75.0f;
             planet.transform.parent = planetsParent.transform;
             planet.transform.GetComponent<Renderer>().material = planet_mats[0];
         }
@@ -117,6 +123,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         {
             GameObject planet = Instantiate(planetPrefab, t[i].planet2, Quaternion.identity);
             planet.transform.localScale = new Vector3(t[i].scale2, t[i].scale2, t[i].scale2);
+			planet.transform.GetComponent<Rigidbody> ().mass = planet.transform.localScale.x * 75.0f;
             planet.transform.parent = planetsParent.transform;
             planet.transform.GetComponent<Renderer>().material = planet_mats[1];
         }
@@ -125,6 +132,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         {
             GameObject planet = Instantiate(planetPrefab, t[i].planet3, Quaternion.identity);
             planet.transform.localScale = new Vector3(t[i].scale3, t[i].scale3, t[i].scale3);
+			planet.transform.GetComponent<Rigidbody> ().mass = planet.transform.localScale.x * 75.0f;
             planet.transform.parent = planetsParent.transform;
             planet.transform.GetComponent<Renderer>().material = planet_mats[2];
         }
@@ -133,6 +141,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         {
             GameObject planet = Instantiate(planetPrefab, t[i].planet4, Quaternion.identity);
             planet.transform.localScale = new Vector3(t[i].scale4, t[i].scale4, t[i].scale4);
+			planet.transform.GetComponent<Rigidbody> ().mass = planet.transform.localScale.x * 75.0f;
             planet.transform.parent = planetsParent.transform;
             planet.transform.GetComponent<Renderer>().material = planet_mats[3];
         }
@@ -152,7 +161,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         for (int i = 0; i < allPlayers.Count; i++)
         {
             string nextParticipantId = allPlayers[i].ParticipantId;
-            Debug.Log("Setting up car for " + nextParticipantId);
+            //Debug.Log("Setting up car for " + nextParticipantId);
             // 3
             Vector3 carStartPoint = Vector3.zero;
 
@@ -250,7 +259,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public void DoPlanetUpdate(List<GameObject> planets)
     {
-        Debug.Log("Sending planet coordiantes to opponent");
+        //Debug.Log("Sending planet coordiantes to opponent");
         Vector2[] positions = new Vector2[planets.Count];
         float[] scales = new float[planets.Count];
         for (int i = 0; i < planets.Count; i++) {
@@ -258,7 +267,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
             positions[i].y = planets[i].transform.position.y;
             scales[i] = planets[i].transform.localScale.x;
         }
-        Debug.Log("Filed positions and scales arrray");
+        //Debug.Log("Filed positions and scales arrray");
         MultiplayerController.Instance.SendMyUpdate_Planets(positions, scales);
 
     }
@@ -296,7 +305,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public void UpdateReceived_Timer(string senderId, int val)
     {
-        Debug.Log("Timer update recevied : change player and reset timer");
+        //Debug.Log("Timer update recevied : change player and reset timer");
         playerTurn = val;
         myCar.GetComponent<Timer>().setTimeLeft(30);
     }
@@ -332,7 +341,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         }*/
         if (_lastUpdateTime_Timer < Time.time - timeOutThreshold)
         {
-            GameOver(2);
+            GameOver(3);
         }
     }
 
@@ -360,14 +369,28 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     public void LeftRoomConfirmed()
     {
-        Debug.Log("Left room confirmed, load main menu scnene now");
+        //Debug.Log("Left room confirmed, load main menu scnene now");
         MultiplayerController.Instance.updateListener = null;
         SceneManager.LoadScene(0);
     }
 
     public void GameOver(int player) {
-        Debug.Log("Load main menu scene after 3 secs");
-        Invoke("LeaveMPGame", 3.0f);
+        CountDown.SetActive(false);
+        gameoverPanel.SetActive(true);
+
+        if (player == 1) {
+            gameoverText.text = "Opponent has won!!!";
+        }
+        else if(player == 2)
+        {
+            gameoverText.text = "You have won!!!";
+        }
+        else if (player == 3)
+        {
+            gameoverText.text = "Opponent has left the room. You have won!!!";
+        }
+        //Debug.Log("Load main menu scene after 3 secs");
+        //Invoke("LeaveMPGame", 3.0f);
     }
 
     public void setPlayer1Destroyed(bool val) {

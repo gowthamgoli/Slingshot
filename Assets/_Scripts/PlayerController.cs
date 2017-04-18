@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour {
 
 				else
 				{
-					if (touch.position.x > (Screen.width / 2) && touch.position.y > (Screen.height / 2))
+					if (touch.position.x > (Screen.width / 2) && touch.position.y > (Screen.height / 8))
 					{
                         //spawnText.text = gameController.getPlayerTurn().ToString();
                         if (gameController.getPlayerTurn() == myTurn && gameController.getNumBolts() == 0)
@@ -217,10 +217,11 @@ public class PlayerController : MonoBehaviour {
     public void DecreaseHealth() {
         
         health -= 34;
-        Debug.Log("Your health : " + health);
+        if (health < 0) health = 0;
+        //Debug.Log("Your health : " + health);
         player1Health.text = health.ToString();
-        if (health < 0) {
-            Debug.Log("Opponent has won the game");
+        if (health == 0) {
+            //Debug.Log("Opponent has won the game");
             //playerDestroyed = true;
             gameController.setPlayer1Destroyed(true);
             //gameController.GameOver(0);

@@ -13,7 +13,19 @@ public class MenuToggle : MonoBehaviour {
 		destination.SetActive (true);
 	}
 
+	public void openInstructionMenu() {
+		logo.SetActive (false);
+		source.SetActive (false);
+		destination.SetActive (true);
+	}
+
 	public void closeSoundMenu() {
+		logo.SetActive (true);
+		source.SetActive (false);
+		destination.SetActive (true);
+	}
+
+	public void closeInstructionMenu() {
 		logo.SetActive (true);
 		source.SetActive (false);
 		destination.SetActive (true);
@@ -23,7 +35,10 @@ public class MenuToggle : MonoBehaviour {
 		// TODO:
 
 		// leave room
-		MultiplayerController.Instance.LeaveGame();
+
+		if (MultiplayerController.Instance.IsAuthenticated()){
+			MultiplayerController.Instance.LeaveGame();
+		}
 
 		logo.SetActive (true);
 		source.SetActive (false);

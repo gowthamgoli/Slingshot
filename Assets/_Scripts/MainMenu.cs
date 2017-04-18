@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
-
-
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour, MPLobbyListener
@@ -14,17 +11,28 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
 	public GameObject soundPanel;
 	public GameObject connectionPanel;
 	public GameObject mainmenuPanel;
+	public GameObject instructionPanel;
 	public Text t;
 	public GameObject logo;
 
 	private GUIStyle currentStyle = null;
 
+    //public MenuToggle menuToggle;
+
+    private int firstTime = 1;
+    public Slider mySlider;
     // Use this for initialization
     void Start () {
-        MultiplayerController.Instance.TrySilentSignIn();
-		soundPanel.SetActive (false);
-		connectionPanel.SetActive (false);
 
+        soundPanel.SetActive(false);
+        connectionPanel.SetActive(false);
+        instructionPanel.SetActive(false);
+
+
+        AudioListener.volume = PlayerPrefs.GetFloat("SoundLevel", 1.0f);
+        mySlider.value = AudioListener.volume;
+
+        MultiplayerController.Instance.TrySilentSignIn();            
     }
 
 	/*
@@ -69,40 +77,54 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
 
     public void PlayGame()
     {
-		connectionPanel.SetActive (true);
-		mainmenuPanel.SetActive (false);
-		logo.SetActive (false);
+        firstTime = PlayerPrefs.GetInt("FirstPlay", 0);
+        //Debug.Log("firstime : " + firstTime);
+        if (firstTime == 0)
+        {
+            PlayerPrefs.SetInt("FirstPlay", 1);
+            logo.SetActive(false);
+            mainmenuPanel.SetActive(false);
+            instructionPanel.SetActive(true);
+            //menuToggle.openInstructionMenu();
 
-		/* Check if user is connected to internet*/
+        }
+        else
+        {
+            connectionPanel.SetActive(true);
+            mainmenuPanel.SetActive(false);
+            instructionPanel.SetActive(false);
+            logo.SetActive(false);
 
-		/*
-		string url = "https://google.com";
-		WWW www = new WWW(url);
+            /* Check if user is connected to internet*/
 
-		if (www.text == "")
-		{
-			//No connection/some error
+            /*
+            string url = "https://google.com";
+            WWW www = new WWW(url);
 
-			//t.text = "You are not connected to internet... Please connect and try again!";
-			t.text = "not ok";
-			return;
-		}
+            if (www.text == "")
+            {
+                //No connection/some error
 
-		*/
+                //t.text = "You are not connected to internet... Please connect and try again!";
+                t.text = "not ok";
+                return;
+            }
 
-		if (Application.internetReachability == NetworkReachability.NotReachable)
-		{
-			t.text = "You are not connected to internet... Please connect and try again!";
-			//t.text = "not ok";
-			return;
-		}
-        Debug.Log("Pressed play");
-        //_lobbyMessage = "Starting a multi-player game...";
-		t.text = "Starting a multi-player game...";
-        //_showLobbyDialog = true;
-        MultiplayerController.Instance.lobbyListener = this;
-        MultiplayerController.Instance.SignInAndStartMPGame();
+            */
 
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                t.text = "You are not connected to internet... Please connect and try again!";
+                //t.text = "not ok";
+                return;
+            }
+            //Debug.Log("Pressed play");
+            //_lobbyMessage = "Starting a multi-player game...";
+            t.text = "Starting a multi-player game...";
+            //_showLobbyDialog = true;
+            MultiplayerController.Instance.lobbyListener = this;
+            MultiplayerController.Instance.SignInAndStartMPGame();
+        }
         /*if (_showLobbyDialog)
         {
             Debug.Log("Show lobby msg");
@@ -112,15 +134,15 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
         //SceneManager.LoadScene(1);
     }
 
-    public void Multiplayer()
+    public void Offline()
     {
-        Debug.Log("Pressed multi");
-        SceneManager.LoadScene(1);
+        //Debug.Log("Pressed offline");
+        SceneManager.LoadScene(2);
     }
 
     public void Logout()
     {
-        Debug.Log("Pressed Logout");
+        //Debug.Log("Pressed Logout");
         if (MultiplayerController.Instance.IsAuthenticated())
         {
             MultiplayerController.Instance.SignOut();
@@ -137,4 +159,6 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
         _lobbyMessage = "";
         _showLobbyDialog = false;
     }
+
+
 }
