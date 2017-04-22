@@ -26,7 +26,8 @@ public class Pause : MonoBehaviour {
 
     public void MainMenuButton()
     {
-        MultiplayerController.Instance.LeaveGame();
+        //MultiplayerController.Instance.LeaveGame();
+        SceneManager.LoadScene(0);
     }
 
     public void Quit()
@@ -34,5 +35,6 @@ public class Pause : MonoBehaviour {
         MultiplayerController.Instance.LeaveGame();
         SceneManager.LoadScene(0);
     }
+
 
 }

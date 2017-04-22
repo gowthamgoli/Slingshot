@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     private bool player1Destroyed = false;
     private bool player2Destroyed = false;
 
-    public float timeOutThreshold = 80.0f;
+    public float timeOutThreshold = 65.0f;
     private float _timeOutCheckInterval = 1.0f;
     private float _nextTimeoutCheck = 0.0f;
 
@@ -65,14 +65,21 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
     private float _lastUpdateTime_Timer;
 
+    bool firstTimePlayer = true;
+    bool firstTimeOpponent = true;
+    public Text turnMessage;
+    public GameObject turnPanel;
+
     void Start() {
 
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         obj = new Configuration();
         t = obj.getList();
 
         _lastUpdateTime_Timer = Time.time;
-        gameoverText = GameObject.Find("GameOverMessage").GetComponent<Text>();
+        //gameoverText = GameObject.Find("GameOverMessage").GetComponent<Text>();
         gameoverPanel.SetActive(false);
+        turnPanel.SetActive(false);
         
         //playerController = myCar.GetComponent<PlayerController>();
         //randPlanets = new RandomPlanets();
@@ -85,24 +92,47 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         if(val == true)
         {
             player2Destroyed = true;
-            GameOver(2);
+            GameOver(1);
         }
 
         if (val == false)
         {
             player2Destroyed = true;
-            GameOver(2);
+            GameOver(4);
         }
     }
 
     void Update() {
         //if (playerTurn == playerController.GetMyTurn())
             
-            DoMultiplayerUpdate();
+        DoMultiplayerUpdate();
+        /*if (playerTurn == myCar.GetComponent<PlayerController>().GetMyTurn() && numBolts == 0 && firstTimePlayer)
+        {
+            turnPanel.SetActive(true);
+            turnMessage.text = "Your turn";
+            Invoke("DisableTurnPanel", 1.0f);
+            firstTimePlayer = false;
+            firstTimeOpponent = true;
+        }
+        else if (playerTurn != myCar.GetComponent<PlayerController>().GetMyTurn() && numBolts == 0 && firstTimeOpponent)
+        {
+            turnPanel.SetActive(true);
+            turnMessage.text = "Opponent's turn";
+            Invoke("DisableTurnPanel", 1.0f);
+            firstTimePlayer = true;
+            firstTimeOpponent = false;
+        }*/
+
         /*if (myCar.GetComponent<PlayerController>().GetPlayerDestroyed() || opponentCar.GetComponent<OpponentController>().GetOpponentDestroyed()) {
             //MultiplayerController.Instance.SendFinishMessage();
             Invoke("LeaveMPGame", 3.0f);
         }*/
+    }
+
+
+    public void DisableTurnPanel()
+    {
+        turnPanel.SetActive(false);
     }
 
     private int InitializePlanets(int p, int x)
@@ -225,11 +255,11 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         if (Time.time > _nextBroadcastTime && (!player1Destroyed && !player2Destroyed))
         {
             //rotationText.text = "sending " + playerTurn.ToString();
-            if (playerTurn == myCar.GetComponent<PlayerController>().GetMyTurn())
-            {
+            //if (playerTurn == myCar.GetComponent<PlayerController>().GetMyTurn())
+            //{
                 MultiplayerController.Instance.SendMyUpdate(myCar.transform.rotation.eulerAngles.z, myCar.transform.position.y);
                 _nextBroadcastTime = Time.time + .16f;
-            }
+            //}
         }
 
         if (Time.time > _nextTimeoutCheck)
@@ -371,7 +401,16 @@ public class GameController : MonoBehaviour, MPUpdateListener {
     {
         //Debug.Log("Left room confirmed, load main menu scnene now");
         MultiplayerController.Instance.updateListener = null;
-        SceneManager.LoadScene(0);
+        //GameOver(4);
+        //SceneManager.LoadScene(0);
+    }
+
+    public void LeftRoomConfirmed(int ind)
+    {
+        //Debug.Log("Left room confirmed, load main menu scnene now");
+        MultiplayerController.Instance.updateListener = null;
+        GameOver(3);
+        //SceneManager.LoadScene(0);
     }
 
     public void GameOver(int player) {
@@ -380,17 +419,28 @@ public class GameController : MonoBehaviour, MPUpdateListener {
 
         if (player == 1) {
             gameoverText.text = "Opponent has won!!!";
+            MultiplayerController.Instance.LeaveGame();
+            Invoke("LoadMainMenuScene", 5.0f);
         }
         else if(player == 2)
         {
             gameoverText.text = "You have won!!!";
+            MultiplayerController.Instance.LeaveGame();
+            Invoke("LoadMainMenuScene", 5.0f);
         }
         else if (player == 3)
         {
             gameoverText.text = "Opponent has left the room. You have won!!!";
+            MultiplayerController.Instance.LeaveGame();
+            Invoke("LoadMainMenuScene", 5.0f);
+        }
+        else if (player == 4)
+        {
+            gameoverText.text = "You have left the room. Opponent has won!!!";
+            Invoke("LoadMainMenuScene", 5.0f);
         }
         //Debug.Log("Load main menu scene after 3 secs");
-        //Invoke("LeaveMPGame", 3.0f);
+        
     }
 
     public void setPlayer1Destroyed(bool val) {
@@ -431,5 +481,9 @@ public class GameController : MonoBehaviour, MPUpdateListener {
         myCar.GetComponent<Timer>().ResetCount();
     }
 
+
+    public void LoadMainMenuScene() {
+        SceneManager.LoadScene(0);
+    }
 
 }

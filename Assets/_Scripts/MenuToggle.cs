@@ -7,11 +7,24 @@ public class MenuToggle : MonoBehaviour {
 	public GameObject source;
 	public GameObject logo;
 
-	public void openSoundMenu() {
+    public GameObject shareButton;
+    public GameObject helpButton;
+    public GameObject rateButton;
+    public GameObject logoutButton;
+
+    public void openSoundMenu() {
 		logo.SetActive (false);
 		source.SetActive (false);
 		destination.SetActive (true);
 	}
+
+    public void EnableButtons()
+    {
+        shareButton.SetActive(true);
+        helpButton.SetActive(true);
+        rateButton.SetActive(true);
+        logoutButton.SetActive(true);
+    }
 
 	public void openInstructionMenu() {
 		logo.SetActive (false);
@@ -29,6 +42,7 @@ public class MenuToggle : MonoBehaviour {
 		logo.SetActive (true);
 		source.SetActive (false);
 		destination.SetActive (true);
+        EnableButtons();
 	}
 
 	public void closeConnectionMenu() {

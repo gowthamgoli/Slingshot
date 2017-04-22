@@ -61,8 +61,9 @@ public class RadialSlider : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }*/
 
         if (ray != null && input != null)
-        {   
+        {
             while (Application.isPlaying && gameController.getPlayerTurn() == playerController.GetMyTurn() && gameController.getNumBolts() == 0)
+            //while (Application.isPlaying)
             {
 
                 // TODO: if mousebutton down

@@ -15,4 +15,5 @@ public interface MPUpdateListener
     void UpdateReceived_Rand(string senderId, int rand);
     void UpdateReceived_Planets(string senderId, Vector2[] positions, float[] scales);
     void LeftRoomConfirmed();
+    void LeftRoomConfirmed(int ind);
 }

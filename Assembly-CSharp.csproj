@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{1AF7E356-2D58-7119-FE6C-C1ED31A62E64}</ProjectGuid>
+    <ProjectGuid>{1E8C74BF-8431-ED87-4528-DB65B6F662E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_5_1;UNITY_5_5;UNITY_5;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;UNITY_ANDROID;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VIDEO;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_5_1;UNITY_5_5;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;UNITY_ANDROID;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VIDEO;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -239,6 +239,7 @@
      <Compile Include="Assets\_Scripts\AddForce.cs" />
      <Compile Include="Assets\_Scripts\AdjustVolume.cs" />
      <Compile Include="Assets\_Scripts\AutoDestroy.cs" />
+     <Compile Include="Assets\_Scripts\CheckVersion.cs" />
      <Compile Include="Assets\_Scripts\Configuration.cs" />
      <Compile Include="Assets\_Scripts\DestroyBolt.cs" />
      <Compile Include="Assets\_Scripts\DestroyBolt_Opponent.cs" />
@@ -268,6 +269,7 @@
      <Compile Include="Assets\_Scripts\Print.cs" />
      <Compile Include="Assets\_Scripts\RadialSlider.cs" />
      <Compile Include="Assets\_Scripts\RandomPlanets.cs" />
+     <Compile Include="Assets\_Scripts\RateApp.cs" />
      <Compile Include="Assets\_Scripts\RotateSphere.cs" />
      <Compile Include="Assets\_Scripts\ScalableCamera.cs" />
      <Compile Include="Assets\_Scripts\ScrollSnapRect.cs" />
@@ -275,6 +277,7 @@
      <Compile Include="Assets\_Scripts\SwitchCamera.cs" />
      <Compile Include="Assets\_Scripts\Test.cs" />
      <Compile Include="Assets\_Scripts\Timer.cs" />
+     <Compile Include="Assets\_Scripts\facebookShare.cs" />
      <Compile Include="Assets\unity-ui-extensions\Examples\UIVerticalScrollerDemo\Scripts\ScrollingCalendar.cs" />
      <Compile Include="Assets\unity-ui-extensions\Examples\testHref.cs" />
      <Compile Include="Assets\unity-ui-extensions\Scripts\Controls\Accordion\Accordion.cs" />
@@ -416,8 +419,10 @@
      <None Include="Assets\unity-ui-extensions\Shaders\UILinearDodge.shader" />
      <None Include="Assets\Materials\UI-Default-No-Alpha.shader" />
      <None Include="Assets\Shader\Additive_Base.shader" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
      <None Include="Assets\unity-ui-extensions\Shaders\UIMultiply.shader" />
+     <None Include="Assets\FacebookSDK\link.xml" />
      <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
      <None Include="Assets\unity-ui-extensions\Shaders\UIScreen.shader" />
  <Reference Include="UnityEngine.UI">
@@ -437,6 +442,12 @@
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="Facebook.Unity">
+ <HintPath>C:/Users/Gowtham Goli/Desktop/Archive (1)/Assets/FacebookSDK/Plugins/Facebook.Unity.dll</HintPath>
+ </Reference>
+ <Reference Include="Facebook.Unity.Settings">
+ <HintPath>C:/Users/Gowtham Goli/Desktop/Archive (1)/Assets/FacebookSDK/Plugins/Settings/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

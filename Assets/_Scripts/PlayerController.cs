@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
     //private GameObject gameManager;
     private GameController gameController;
 
-	public GameObject menuPanel;
+    //public GameObject menuPanel;
 
     //public Slider speedSilder;
 
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour {
     private Timer timer;
 
     //private Text player1Health;
-    
+
     //int rotationZ;
 
     //private bool playerDestroyed;
@@ -50,23 +50,29 @@ public class PlayerController : MonoBehaviour {
 
     private int health = 100;
     private Text player1Health;
+    
+    
     //private Text player2Health;
 
     //private Color32[] colors_health = new Color32[2];
 
     //private int numBoltsShot = 0;
 
+
     // Use this for initialization
     void Start() {
         //rotationText = GameObject.Find("rotation").GetComponent<Text>();
         player1Health = GameObject.Find("player1Health").GetComponent<Text>();
+        //turnMessage = GameObject.Find("TurnMessage").GetComponent<Text>();
         //player2Health = GameObject.Find("player2Health").GetComponent<Text>();
         //colors_health[0] = new Color32(106, 0, 236, 255);
         //colors_health[1] = new Color32(216, 137, 19, 255);
         //spawnText = GameObject.Find("spawn").GetComponent<Text>();
-        menuPanel = GameObject.Find("MenuPanel");
+        //turnPanel = GameObject.Find("TurnPanel");
+        //turnPanel.SetActive(false);
+        //menuPanel = GameObject.Find("MenuPanel");
         timer = gameObject.GetComponent<Timer>();
-        menuPanel.SetActive(false);
+        //menuPanel.SetActive(false);
         gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         speedSilder = GameObject.Find("Slider").GetComponent<Slider>();
         //playerDestroyed = false;
@@ -77,45 +83,46 @@ public class PlayerController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-		if (!menuPanel.active) 
-		{
-			
-			if (Input.touchCount == 1)
-			{
-				touch = Input.GetTouch(0);
-				if (touch.phase == TouchPhase.Began)    //check for the first touch
-				{
-					//do nothing
-				}
+            if (Input.touchCount == 1)
+            {
+                touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)    //check for the first touch
+                {
+                    //do nothing
+                }
 
-				else if (touch.phase == TouchPhase.Moved)
-				{
-                    if (gameController.getPlayerTurn() == myTurn && touch.position.x < (Screen.width / 2) && touch.position.x > (Screen.width / 8) && gameController.getNumBolts() == 0)
-                    {  
-                        transform.Translate(Vector3.up * touch.deltaPosition.y * 2.5f * Time.deltaTime, Space.World);
-                        // initially, the temporary vector should equal the player's position
-                        Vector3 clampedPosition = transform.position;
-                        // Now we can manipulte it to clamp the y element
-                        clampedPosition.y = Mathf.Clamp(transform.position.y, -5f, 5f);
-                        // re-assigning the transform's position will clamp it
-                        transform.position = clampedPosition;
+                else if (touch.phase == TouchPhase.Moved)
+                {
+                    if ((touch.position.x < (Screen.width / 2) && touch.position.x > (Screen.width / 8)) || (touch.position.x < (Screen.width / 8) && touch.position.y > (Screen.height / 7)))
+                    //if (touch.position.x < (Screen.width / 2) && touch.position.x > (Screen.width / 8))
+                    {
+                        if (gameController.getPlayerTurn() == myTurn && gameController.getNumBolts() == 0)
+                        {
+                            transform.Translate(Vector3.up * touch.deltaPosition.y * 2.5f * Time.deltaTime, Space.World);
+                            // initially, the temporary vector should equal the player's position
+                            Vector3 clampedPosition = transform.position;
+                            // Now we can manipulte it to clamp the y element
+                            clampedPosition.y = Mathf.Clamp(transform.position.y, -5f, 5f);
+                            // re-assigning the transform's position will clamp it
+                            transform.position = clampedPosition;
+                        }
                     }
                 }
-				else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
-				{
-					//do nothing
-				}
+                else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
+                {
+                    //do nothing
+                }
 
-				else
-				{
-					if (touch.position.x > (Screen.width / 2) && touch.position.y > (Screen.height / 8))
-					{
+                else
+                {
+                    if (touch.position.x > (Screen.width / 2) && touch.position.y > (Screen.height / 8))
+                    {
                         //spawnText.text = gameController.getPlayerTurn().ToString();
                         if (gameController.getPlayerTurn() == myTurn && gameController.getNumBolts() == 0)
-						{      
-						    if (Time.time > nextFire)
-						    {
-							    nextFire = Time.time + fireRate;
+                        {
+                            if (Time.time > nextFire)
+                            {
+                                nextFire = Time.time + fireRate;
                                 gameController.incNumBolts();
                                 Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
                                 timer.setPauseCount(true);
@@ -123,56 +130,58 @@ public class PlayerController : MonoBehaviour {
                                 //PowerSlider.SetActive(false);
                                 //gameObject.GetComponent<Timer>().enabled = false;
                                 shoot.Play();
-							    try
-							    {
-								    gameController.DoShotUpdate(shotSpawn.position, shotSpawn.eulerAngles.z, speedSilder.value);
-							    }
-							    catch (Exception e) {
-								    Debug.Log("Exception " + e.ToString());
-							    }
-							    gameController.setPlayerTurn(1 - myTurn);
-						    }
-						}
-					}
-				}
+                                try
+                                {
+                                    gameController.DoShotUpdate(shotSpawn.position, shotSpawn.eulerAngles.z, speedSilder.value);
+                                }
+                                catch (Exception e) {
+                                    Debug.Log("Exception " + e.ToString());
+                                }
+                                gameController.setPlayerTurn(1 - myTurn);
+                            }
+                        }
+                    }
+                }
 
-			}
+            }
 
-			if (Input.GetKey("up")) {
-				//print ("up arrow key is held down");
-				transform.Rotate(Vector3.forward * speed * Time.deltaTime);
-				//rotationText.text = transform.rotation.ToString();
-			}
+            
 
-			if (Input.GetKey("down")) {
-				//print ("down arrow key is held down");
-				transform.Rotate(-Vector3.forward * speed * Time.deltaTime);
-				//rotationText.text = transform.rotation.ToString();
-			}
+            if (Input.GetKey("up")) {
+                //print ("up arrow key is held down");
+                transform.Rotate(Vector3.forward * speed * Time.deltaTime);
+                //rotationText.text = transform.rotation.ToString();
+            }
 
-			if (Input.GetKey("w")) {
-				//print ("up arrow key is held down");
-				transform.Translate(Vector3.up * vertSpeed * Time.deltaTime, Space.World);
-			}
+            if (Input.GetKey("down")) {
+                //print ("down arrow key is held down");
+                transform.Rotate(-Vector3.forward * speed * Time.deltaTime);
+                //rotationText.text = transform.rotation.ToString();
+            }
 
-			if (Input.GetKey("s")) {
-				//print ("down arrow key is held down");
-				transform.Translate(-Vector3.up * vertSpeed * Time.deltaTime, Space.World);
-			}
+            if (Input.GetKey("w")) {
+                //print ("up arrow key is held down");
+                transform.Translate(Vector3.up * vertSpeed * Time.deltaTime, Space.World);
+            }
 
-			if (Input.GetButton("Jump") && Time.time > nextFire)
-			{
-				nextFire = Time.time + fireRate;
-				//Debug.Log(shotSpawn.position);
-				//Debug.Log(shotSpawn.rotation.ToString());
-				//spawnText.text = shotSpawn.position.ToString();
-				Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-				shoot.Play();
-			}
+            if (Input.GetKey("s")) {
+                //print ("down arrow key is held down");
+                transform.Translate(-Vector3.up * vertSpeed * Time.deltaTime, Space.World);
+            }
+
+            if (Input.GetButton("Jump") && Time.time > nextFire)
+            {
+                nextFire = Time.time + fireRate;
+                //Debug.Log(shotSpawn.position);
+                //Debug.Log(shotSpawn.rotation.ToString());
+                //spawnText.text = shotSpawn.position.ToString();
+                Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+                shoot.Play();
+            }
             /*Debug.Log("Player Turn: " + gameController.getPlayerTurn());
             Debug.Log("Num of bolts: " + gameController.getNumBolts());
             Debug.Log("Time Left: " + timer.getTimeLeft());*/
-            
+
             /*if (gameController.getPlayerTurn() == myTurn && gameController.getNumBolts() == 0)
             {
                 Debug.Log("Setting sliders to active");
@@ -183,10 +192,8 @@ public class PlayerController : MonoBehaviour {
                     Rotator.SetActive(true);
                 }
             }*/
-
-        }
-        
     }
+
 
     public void SetCarChoice(int carNum, bool isMultiplayer)
     {
@@ -228,5 +235,4 @@ public class PlayerController : MonoBehaviour {
             Destroy(gameObject);
         }
     }
-
 }

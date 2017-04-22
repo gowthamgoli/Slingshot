@@ -43,7 +43,7 @@ public class PlayerController_Offline : MonoBehaviour {
 
                 else if (touch.phase == TouchPhase.Moved)
                 {
-                    if (touch.position.x < (Screen.width / 2) && touch.position.x > (Screen.width / 8))
+                    if ((touch.position.x < (Screen.width / 2) && touch.position.x > (Screen.width / 8)) || (touch.position.x < (Screen.width / 8) && touch.position.y > (Screen.height / 7)))
                     {
                         transform.Translate(Vector3.up * touch.deltaPosition.y * 2.5f * Time.deltaTime, Space.World);
                         // initially, the temporary vector should equal the player's position
@@ -61,7 +61,7 @@ public class PlayerController_Offline : MonoBehaviour {
 
                 else
                 {
-                    if (touch.position.x > (Screen.width / 2) && touch.position.y > (Screen.height / 8))
+                    if (touch.position.x > (Screen.width / 2) && touch.position.y > (Screen.height / 8) && touch.position.y < 0.875f*(Screen.height))
                     {
                         //spawnText.text = gameController.getPlayerTurn().ToString();
                         //if (gameController.getPlayerTurn() == myTurn && gameController.getNumBolts() == 0)

@@ -150,11 +150,14 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     public void OnParticipantLeft(Participant participant)
     {
+        
         throw new NotImplementedException();
     }
 
     public void OnPeersConnected(string[] participantIds)
     {
+        //ShowMPStatus("We have left the room.");
+       
         foreach (string participantID in participantIds)
         {
             ShowMPStatus("Player " + participantID + " has joined.");
@@ -163,6 +166,11 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     public void OnPeersDisconnected(string[] participantIds)
     {
+        Debug.Log("Somone has disconnctedd");
+        if (updateListener != null)
+        {
+            updateListener.LeftRoomConfirmed(1);
+        }
         foreach (string participantID in participantIds)
         {
             ShowMPStatus("Player " + participantID + " has left.");
